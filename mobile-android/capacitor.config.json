@@ -1,0 +1,6 @@
+{
+  "appId": "br.liz.app",
+  "appName": "Liz",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

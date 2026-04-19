@@ -35,6 +35,8 @@ desktop-tauri/dist/
 desktop-tauri/src-tauri/target/
 desktop-tauri/*.exe
 desktop-tauri/tauri-schema.json
+mobile-android/android/
+mobile-android/www/
 dist/
 build/
 frontend/.pages-deploy/
