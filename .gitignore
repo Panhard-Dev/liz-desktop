@@ -53,3 +53,6 @@ codigo_final.py
 tests/audit-output/
 tests/*.png
 tests/*.jpg
+
+# Downloaded CI artifacts
+linux-builds/
