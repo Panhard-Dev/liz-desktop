@@ -1,0 +1,20 @@
+@import url('./variables.css?v=20260408-2');
+@import url('./layout.css?v=20260418-2');
+@import url('./components.css?v=20260418-2');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+}

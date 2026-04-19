@@ -1,0 +1,50 @@
+<section class="settings-section" id="tab-ajuda">
+  <h2>Ajuda</h2>
+  <div class="tab-placeholder help-content" id="helpRoot">
+    <p class="help-text">
+      Central de ajuda da Liz. Escolha uma opcao para ver orientacoes rapidas.
+    </p>
+    <div class="help-actions">
+      <button class="outline-btn help-btn" type="button" data-help-action="faq">Perguntas frequentes</button>
+      <button class="outline-btn help-btn" type="button" data-help-action="suporte">Falar com suporte</button>
+      <button class="outline-btn help-btn" type="button" data-help-action="status">Status da plataforma</button>
+    </div>
+
+    <div class="help-support-card">
+      <div class="help-support-head">
+        <div class="help-support-title">Enviar mensagem para suporte</div>
+        <div class="help-support-target">Destino: suporte.liz.oficiall@gmail.com</div>
+      </div>
+
+      <div class="help-support-row">
+        <label class="help-support-label" for="helpSupportEmail">Email da sua conta</label>
+        <input
+          class="help-support-input"
+          id="helpSupportEmail"
+          type="email"
+          readonly
+          placeholder="Carregando email da conta..."
+        />
+      </div>
+
+      <div class="help-support-row">
+        <label class="help-support-label" for="helpSupportMessage">Sua mensagem</label>
+        <textarea
+          class="help-support-textarea"
+          id="helpSupportMessage"
+          maxlength="1500"
+          placeholder="Descreva seu problema ou duvida. Quanto mais detalhes, melhor."
+        ></textarea>
+      </div>
+
+      <div class="help-support-footer">
+        <button class="outline-btn help-send-btn" id="helpSupportSendBtn" type="button">
+          Enviar para suporte
+        </button>
+        <div class="help-support-count" id="helpSupportCount">0/1500</div>
+      </div>
+    </div>
+
+    <div class="help-feedback" id="helpFeedback" aria-live="polite"></div>
+  </div>
+</section>

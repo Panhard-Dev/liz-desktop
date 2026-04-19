@@ -1,0 +1,5 @@
+/*
+  Fase 1 (segura): mantemos o CSS atual funcionando para nao quebrar o layout.
+  Na proxima etapa, migramos os blocos de estrutura para este arquivo.
+*/
+@import url('../../styles/style.css?v=20260418-2');

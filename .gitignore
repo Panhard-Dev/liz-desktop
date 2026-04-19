@@ -1,0 +1,55 @@
+# Secrets
+backend/.env
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Python caches
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual environments
+.venv/
+backend/.venv/
+
+# Node
+node_modules/
+**/node_modules/
+
+# Local runtime / logs
+.run/
+.wrangler/
+*.log
+*.pid
+frontend-serve.log
+frontend-serve.err.log
+
+# Build outputs
+desktop-exe/
+desktop-tauri/app/
+desktop-tauri/dist/
+desktop-tauri/src-tauri/target/
+desktop-tauri/*.exe
+desktop-tauri/tauri-schema.json
+dist/
+build/
+frontend/.pages-deploy/
+
+# Backend local secrets/state
+backend-worker/.dev.vars
+backend-worker/.wrangler/
+
+# Temporary generated files
+etapa1_analise.json
+etapa2_codigo.json
+etapa3_validado.json
+codigo_final.py
+
+# Test artifacts
+tests/audit-output/
+tests/*.png
+tests/*.jpg

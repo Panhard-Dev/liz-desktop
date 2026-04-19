@@ -1,0 +1,16 @@
+{
+  "name": "liz-tauri",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App desktop Liz em Tauri",
+  "scripts": {
+    "prepare:app": "node scripts/prepare-app.js",
+    "dev": "npm run prepare:app && npx tauri dev",
+    "build": "npm run prepare:app && npx tauri build && node scripts/post-build-rename.js",
+    "build:linux": "npm run prepare:app && npx tauri build --bundles appimage,deb,rpm",
+    "icon": "npx tauri icon ../frontend/public/favicon-top.png"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}

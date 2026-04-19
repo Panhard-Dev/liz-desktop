@@ -1,0 +1,100 @@
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: transparent;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stream-root {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(139, 92, 246, 0.18), transparent 36%),
+    radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.08), transparent 34%),
+    transparent;
+}
+
+.stream-orb {
+  position: absolute;
+  width: min(44vw, 420px);
+  height: min(44vw, 420px);
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.42), transparent 70%);
+  top: 6%;
+  left: 4%;
+  pointer-events: none;
+}
+
+.stream-runner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 8px;
+  padding: 12px 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.stream-lane {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  opacity: 0.88;
+}
+
+.stream-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+  animation: streamMove var(--stream-duration, 30s) linear infinite;
+}
+
+.stream-track.reverse {
+  animation-name: streamMoveReverse;
+}
+
+.stream-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d4cffa;
+  font-size: 11px;
+  letter-spacing: 0.85px;
+  text-transform: uppercase;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  background: rgba(16, 16, 30, 0.56);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.stream-pill img {
+  width: 12px;
+  height: 9px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(167, 139, 250, 0.6));
+}
+
+@keyframes streamMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes streamMoveReverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

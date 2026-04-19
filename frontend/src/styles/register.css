@@ -1,0 +1,193 @@
+@import url('./login.css?v=20260416-1');
+
+body.register-mode {
+  overflow: hidden;
+}
+
+body.register-mode .login-page {
+  position: relative;
+  display: block;
+  min-height: 100dvh;
+}
+
+body.register-mode .login-stage {
+  position: absolute;
+  inset: 0;
+  border-right: none;
+}
+
+body.register-mode .login-sidebar {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding: clamp(8px, 2vh, 16px);
+  border-left: none;
+  background: transparent;
+  overflow: hidden;
+}
+
+body.register-mode .login-card {
+  width: min(460px, 100%);
+  margin: auto;
+  padding: 20px 20px 14px;
+  background: linear-gradient(170deg, rgba(20, 20, 34, 0.82), rgba(10, 10, 20, 0.72));
+  backdrop-filter: blur(8px);
+}
+
+body.register-mode .register-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #ddd6fe;
+  text-decoration: none;
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  border-radius: 999px;
+  background: rgba(8, 8, 18, 0.46);
+  padding: 4px 9px;
+}
+
+body.register-mode .register-back-link:hover {
+  color: #fff;
+  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(16, 16, 30, 0.66);
+}
+
+body.register-mode #registerTitle,
+body.register-mode .login-subtitle {
+  text-align: center;
+}
+
+body.register-mode .login-brand {
+  width: 34px;
+  height: 26px;
+  margin-bottom: 8px;
+}
+
+body.register-mode #registerTitle {
+  font-size: clamp(28px, 2.6vw, 36px);
+  line-height: 1.02;
+}
+
+body.register-mode .login-subtitle {
+  margin: 6px 0 10px;
+  font-size: 13px;
+}
+
+body.register-mode .login-form {
+  gap: 10px;
+}
+
+body.register-mode .field-group {
+  gap: 4px;
+}
+
+body.register-mode .login-label {
+  font-size: 12px;
+}
+
+body.register-mode .login-input {
+  padding: 10px;
+  font-size: 13px;
+}
+
+body.register-mode .password-wrap .login-input {
+  padding-right: 40px;
+}
+
+body.register-mode .password-toggle {
+  width: 28px;
+  height: 28px;
+  right: 6px;
+}
+
+body.register-mode .password-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+body.register-mode .login-submit {
+  min-height: 38px;
+  padding: 10px;
+}
+
+body.register-mode .social-auth {
+  gap: 7px;
+}
+
+body.register-mode .social-auth-label {
+  font-size: 10px;
+}
+
+body.register-mode .social-auth-grid {
+  gap: 6px;
+}
+
+body.register-mode .social-btn {
+  min-height: 36px;
+  font-size: 10px;
+  gap: 5px;
+}
+
+body.register-mode .social-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+body.register-mode .auth-switch {
+  font-size: 11px;
+}
+
+body.register-mode .login-feedback {
+  min-height: 14px;
+  font-size: 11px;
+}
+
+@media (max-width: 900px) {
+  body.register-mode .login-stage {
+    display: none;
+  }
+
+  body.register-mode .login-page {
+    display: flex;
+  }
+
+  body.register-mode .login-sidebar {
+    width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    padding: 14px;
+    background: transparent;
+  }
+}
+
+@media (max-height: 860px) {
+  body.register-mode .login-card {
+    padding: 16px 16px 10px;
+  }
+
+  body.register-mode .login-brand {
+    margin-bottom: 4px;
+  }
+
+  body.register-mode .login-subtitle {
+    margin: 4px 0 8px;
+  }
+
+  body.register-mode .login-form {
+    gap: 8px;
+  }
+
+  body.register-mode .social-auth {
+    gap: 6px;
+  }
+}
+
+@media (max-height: 760px) {
+  body.register-mode .social-auth-label {
+    display: none;
+  }
+}

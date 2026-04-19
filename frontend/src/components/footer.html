@@ -1,0 +1,422 @@
+<div class="settings-modal" id="settingsModal">
+  <div class="settings-panel">
+    <div class="settings-top">
+      <div class="settings-title">Configuracoes</div>
+      <button class="settings-close" id="closeSettingsPanel" aria-label="Fechar painel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-layout">
+      <aside class="settings-sidebar">
+        <nav class="settings-nav">
+          <div class="settings-nav-item active" data-tab="geral">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            Geral
+          </div>
+
+          <div class="settings-nav-item" data-tab="notificacoes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
+              <path d="M10 17a2 2 0 0 0 4 0" />
+            </svg>
+            Notificacoes
+          </div>
+
+          <div class="settings-nav-item" data-tab="personalizacao">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a9 9 0 1 0 9 9c0-1.1-.9-2-2-2h-3a2 2 0 0 1-2-2V5c0-1.1-.9-2-2-2z" />
+              <circle cx="7.5" cy="11.5" r="1" />
+              <circle cx="12" cy="7.5" r="1" />
+              <circle cx="16.5" cy="11.5" r="1" />
+            </svg>
+            Personalizacao
+          </div>
+
+          <div class="settings-nav-item" data-tab="conta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            Conta
+          </div>
+
+          <div class="settings-nav-item" data-tab="ajuda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+            Ajuda
+          </div>
+        </nav>
+      </aside>
+
+      <div class="settings-main">
+        <section class="settings-section active" id="tab-geral">
+          <h2>Geral</h2>
+
+          <div class="security-card" id="securityCard">
+            <button class="security-card-close" id="closeSecurityCard" aria-label="Fechar aviso">x</button>
+            <div class="security-card-head">
+              <div class="security-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <h3>Proteja sua conta</h3>
+                <p>Adicione autenticacao multifator para ajudar a proteger sua conta ao entrar.</p>
+                <button class="outline-btn" type="button">Configurar MFA</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Aparencia</div>
+                <div class="setting-label-desc">Escolha como a interface deve aparecer no sistema.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsThemeSelect" aria-label="Aparencia">
+                    <option value="system">Sistema</option>
+                    <option value="dark">Escuro</option>
+                    <option value="light">Claro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Cor de enfase</div>
+                <div class="setting-label-desc">Define a cor usada nos destaques e botoes.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsAccentSelect" aria-label="Cor de enfase">
+                    <option value="default">Padrao</option>
+                    <option value="purple_neon">Roxo neon</option>
+                    <option value="lilac_soft">Lilas suave</option>
+                    <option value="magenta">Magenta</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Idioma</div>
+                <div class="setting-label-desc">Idioma principal da interface.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsLanguageSelect" aria-label="Idioma">
+                    <option value="auto">Autodetectar</option>
+                    <option value="pt-BR">Portugues</option>
+                    <option value="en-US">English</option>
+                    <option value="es-ES">Espanol</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-notificacoes">
+          <h2>Notificacoes</h2>
+          <div class="settings-notify-subtitle">
+            Controle alertas visuais da Liz.
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Notificacoes do sistema</div>
+                <div class="setting-label-desc">Receber alertas importantes do aplicativo.</div>
+              </div>
+              <div class="setting-control">
+                <button
+                  class="toggle active"
+                  id="settingsNotificationsSystemToggle"
+                  type="button"
+                  aria-label="Alternar notificacoes"
+                  aria-pressed="true"
+                ></button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-personalizacao">
+          <h2>Personalizacao</h2>
+          <div class="settings-personal-subtitle">
+            Ajuste o estilo da Liz para combinar com seu ritmo. A ideia e deixar o chat mais leve, acolhedor e produtivo.
+          </div>
+
+          <div class="settings-personal-modes" id="settingsPersonalModes">
+            <button class="settings-personal-mode active" type="button" data-personalization-mode="acolhedora">
+              <span class="settings-personal-mode-title">Acolhedora</span>
+              <span class="settings-personal-mode-desc">Tom humano e calmo para conversar sem pressa.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="foco">
+              <span class="settings-personal-mode-title">Foco</span>
+              <span class="settings-personal-mode-desc">Mensagens diretas para acelerar suas entregas.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="criativa">
+              <span class="settings-personal-mode-title">Criativa</span>
+              <span class="settings-personal-mode-desc">Estilo inspirador para ideias e exploracoes.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="direta">
+              <span class="settings-personal-mode-title">Direta</span>
+              <span class="settings-personal-mode-desc">Objetividade maxima, sem rodeios.</span>
+            </button>
+          </div>
+
+          <div class="settings-personal-form">
+            <label class="settings-personal-label" for="settingsPersonalGreetingInput">
+              Mensagem inicial personalizada (opcional)
+            </label>
+            <input
+              class="settings-personal-input"
+              id="settingsPersonalGreetingInput"
+              type="text"
+              maxlength="120"
+              placeholder="Ex.: Vamos fechar essa tarefa hoje?"
+            />
+
+            <div class="settings-personal-use-name-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Usar seu nome na saudacao</div>
+                <div class="setting-label-desc">Quando ativo, a Liz inicia falando com voce de forma mais proxima.</div>
+              </div>
+              <div class="setting-control">
+                <button
+                  class="toggle active"
+                  id="settingsPersonalUseNameToggle"
+                  type="button"
+                  aria-label="Usar nome na saudacao"
+                  aria-pressed="true"
+                ></button>
+              </div>
+            </div>
+
+            <div class="settings-personal-preview">
+              <div class="settings-personal-preview-label">Preview da saudacao</div>
+              <div class="settings-personal-preview-text" id="settingsPersonalPreviewText">
+                No que voce esta <span>trabalhando?</span>
+              </div>
+            </div>
+
+            <div class="settings-personal-actions">
+              <button class="outline-btn settings-personal-save-btn" id="settingsPersonalSaveBtn" type="button">
+                Salvar personalizacao
+              </button>
+              <div class="settings-personal-feedback" id="settingsPersonalFeedback"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-conta">
+          <h2>Conta</h2>
+          <div class="account-tab-subtitle">
+            Visao geral da sua conta conectada no banco, com sessao ativa e atalhos de gerenciamento.
+          </div>
+
+          <div class="account-grid">
+            <article class="account-card account-card-main">
+              <div class="account-card-head">
+                <div class="account-avatar" id="accountAvatarWrap" aria-hidden="true">
+                  <img id="accountAvatarImage" alt="" />
+                  <span class="account-avatar-fallback" id="accountAvatarFallback">L</span>
+                </div>
+
+                <div class="account-identity">
+                  <div class="account-name" id="accountDisplayName">Carregando...</div>
+                  <div class="account-username" id="accountUsername">@usuario</div>
+                </div>
+
+                <div class="account-plan-badge" id="accountPlanBadge">Plano Free</div>
+              </div>
+
+              <div class="account-meta-list">
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Email</div>
+                  <div class="account-meta-value" id="accountEmail">-</div>
+                  <button class="account-copy-btn" id="accountCopyEmailBtn" type="button">Copiar</button>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">ID</div>
+                  <div class="account-meta-value" id="accountUserId">-</div>
+                  <button class="account-copy-btn" id="accountCopyIdBtn" type="button">Copiar</button>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Criada em</div>
+                  <div class="account-meta-value" id="accountCreatedAt">-</div>
+                  <div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="account-card">
+              <div class="account-card-title">Sessao</div>
+              <div class="account-session-status" id="accountSessionStatus">Verificando...</div>
+
+              <div class="account-meta-list compact">
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Expira em</div>
+                  <div class="account-meta-value" id="accountSessionExpiry">-</div>
+                  <div></div>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Ultima sync</div>
+                  <div class="account-meta-value" id="accountLastSync">-</div>
+                  <div></div>
+                </div>
+              </div>
+
+              <div class="account-actions">
+                <button class="outline-btn account-action-btn" id="accountRefreshBtn" type="button">Atualizar dados</button>
+                <button class="outline-btn account-action-btn" id="accountEditProfileBtn" type="button">Editar perfil</button>
+                <button class="outline-btn account-action-btn" id="accountOpenActivityBtn" type="button">Ver atividade</button>
+                <button class="outline-btn account-action-btn danger" id="settingsLogoutBtn" type="button">Sair da conta</button>
+              </div>
+
+              <div class="account-feedback" id="accountFeedback"></div>
+            </article>
+          </div>
+        </section>
+
+{{help}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="profile-modal" id="profileModal" hidden>
+  <div class="profile-panel">
+    <div class="profile-panel-top">
+      <div>
+        <h2 class="profile-panel-title">Meu perfil</h2>
+        <p class="profile-panel-subtitle">Atualize seu nome, usuario e foto.</p>
+      </div>
+      <button class="profile-panel-close" id="closeProfilePanel" aria-label="Fechar perfil" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form class="profile-form" id="profileForm">
+      <div class="profile-avatar-editor">
+        <div class="profile-avatar-preview" id="profileAvatarPreviewWrap">
+          <img id="profileAvatarPreview" alt="Preview da foto do perfil" />
+          <svg id="profileAvatarPreviewFallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </div>
+
+        <div class="profile-avatar-actions">
+          <button class="outline-btn profile-upload-btn" id="profileAvatarUploadBtn" type="button">Escolher foto</button>
+          <button class="outline-btn profile-remove-btn" id="profileAvatarRemoveBtn" type="button">Remover</button>
+          <input id="profileAvatarFileInput" type="file" accept="image/*" hidden />
+        </div>
+      </div>
+
+      <div class="profile-form-grid">
+        <label class="profile-form-label" for="profileDisplayNameInput">Nome de exibicao</label>
+        <input class="profile-form-input" id="profileDisplayNameInput" name="display_name" type="text" maxlength="60" autocomplete="name" />
+      </div>
+
+      <div class="profile-form-grid">
+        <label class="profile-form-label" for="profileUsernameInput">Nome de usuario</label>
+        <input class="profile-form-input" id="profileUsernameInput" name="username" type="text" maxlength="30" autocomplete="username" />
+      </div>
+
+      <div class="profile-form-footer">
+        <div class="profile-form-feedback" id="profileFormFeedback"></div>
+        <button class="send-btn profile-save-btn" id="saveProfileBtn" type="submit">Salvar perfil</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="activity-modal" id="activityModal" hidden>
+  <div class="activity-panel">
+    <div class="activity-top">
+      <div>
+        <h2 class="activity-title">Atividade</h2>
+        <p class="activity-subtitle">Evolucao das suas interacoes mes a mes</p>
+      </div>
+      <button class="activity-close" id="closeActivityPanel" aria-label="Fechar atividade" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="activity-summary" id="activitySummary">Carregando atividade...</div>
+    <div class="activity-chart" id="activityChart"></div>
+  </div>
+</div>
+
+<div class="usage-modal" id="usageModal" hidden>
+  <div class="usage-panel">
+    <div class="usage-top">
+      <div>
+        <h2 class="usage-title">Limites de uso restantes</h2>
+        <p class="usage-subtitle" id="usageSubtitle">Plano Free: 2.000 tokens para usar Liz 2.3 e Liz 2.5.</p>
+      </div>
+      <button class="usage-close" id="closeUsagePanel" aria-label="Fechar limites de uso" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="usage-grid">
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label">Plano atual</div>
+          <div class="usage-card-value" id="usagePlanValue">Gratis</div>
+        </div>
+      </article>
+
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label" id="usageMetricOneLabel">Tokens Liz 2.3/2.5</div>
+          <div class="usage-card-value" id="usageMetricOneValue">2000/2000</div>
+        </div>
+        <div class="usage-track">
+          <div class="usage-fill" id="usageMetricOneFill" style="width: 100%"></div>
+        </div>
+      </article>
+
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label" id="usageMetricTwoLabel">Recarga</div>
+          <div class="usage-card-value" id="usageMetricTwoValue">A cada 5h apos zerar</div>
+        </div>
+        <div class="usage-track">
+          <div class="usage-fill" id="usageMetricTwoFill" style="width: 100%"></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="usage-note" id="usageNote">Atualizando uso da conta...</div>
+  </div>
+</div>

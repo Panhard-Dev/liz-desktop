@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #09090f;
+  --bg-sidebar: #0c0c15;
+  --bg-input: #14142a;
+  --bg-hover: #1a1a2e;
+  --bg-active: rgba(139, 92, 246, 0.14);
+  --purple: #8b5cf6;
+  --purple-light: #a78bfa;
+  --accent-rgb: 139, 92, 246;
+  --accent-light-rgb: 167, 139, 250;
+  --accent-gradient: linear-gradient(90deg, var(--purple), var(--purple-light));
+  --accent-shadow-soft: rgba(var(--accent-rgb), 0.24);
+  --accent-shadow-strong: rgba(var(--accent-rgb), 0.4);
+  --accent-shadow-light: rgba(var(--accent-light-rgb), 0.55);
+  --purple-glow: rgba(139, 92, 246, 0.13);
+  --purple-border: rgba(139, 92, 246, 0.22);
+  --purple-border-h: rgba(167, 139, 250, 0.5);
+  --text: #ede9fe;
+  --text-sec: #7b7a9e;
+  --text-muted: #3a3a58;
+  --text-dark: #5f5a7e;
+  --bg-panel: #10101b;
+  --bg-panel-2: #141425;
+  --border: rgba(139, 92, 246, 0.15);
+  --danger: #f87171;
+  --sidebar-w: 240px;
+  --topbar-h: 58px;
+}
+
+:root[data-theme='light'] {
+  --bg: #f1eefc;
+  --bg-sidebar: #ebe7fa;
+  --bg-input: #ffffff;
+  --bg-hover: #e6e1f8;
+  --bg-active: rgba(var(--accent-rgb), 0.2);
+  --text: #231d3c;
+  --text-sec: #5f5882;
+  --text-muted: #7c75a0;
+  --text-dark: #8e87b1;
+  --bg-panel: #f8f6ff;
+  --bg-panel-2: #f0ecff;
+  --border: rgba(var(--accent-rgb), 0.24);
+}

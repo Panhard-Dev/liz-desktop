@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="liz-api-base" content="https://liz-brasil-api.studiosluxgames.workers.dev/api/v1">
+  <meta name="liz-supabase-url" content="https://xrwqixhmkqjwivmqosfj.supabase.co">
+  <title>Cadastro | Liz Brasil</title>
+  <link rel="icon" type="image/png" href="../src/assets/icons/favicon-top.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/styles/register.css?v=20260416-1">
+</head>
+<body class="register-mode">
+  <main class="login-page">
+    <section class="login-stage" aria-label="Apresentacao Liz">
+      <iframe
+        class="stage-frame"
+        src="crown-stream.html"
+        title="Coroa e texto Liz"
+        loading="lazy"
+      ></iframe>
+    </section>
+
+    <aside class="login-sidebar">
+      <section class="login-card" aria-labelledby="registerTitle">
+        <a href="login.html" class="register-back-link">â† Voltar para login</a>
+
+        <div class="login-brand">
+          <img src="../src/assets/icons/favicon-top.png" alt="Liz Brasil" class="login-logo">
+        </div>
+
+        <h1 id="registerTitle">Criar conta na Liz</h1>
+        <p class="login-subtitle">Cadastro rapido para entrar no painel.</p>
+
+        <form id="registerForm" class="login-form" novalidate>
+          <div class="field-group">
+            <label class="login-label" for="registerName">Nome</label>
+            <input class="login-input" id="registerName" type="text" autocomplete="name" required placeholder="Seu nome">
+          </div>
+
+          <div class="field-group">
+            <label class="login-label" for="registerEmail">Email</label>
+            <input class="login-input" id="registerEmail" type="email" autocomplete="email" required placeholder="seu@email.com">
+          </div>
+
+          <div class="field-group">
+            <label class="login-label" for="registerPassword">Senha</label>
+            <div class="password-wrap">
+              <input class="login-input" id="registerPassword" type="password" autocomplete="new-password" required placeholder="Minimo 12 (Aa1!...)">
+              <button
+                class="password-toggle"
+                type="button"
+                data-password-toggle
+                data-target="registerPassword"
+                aria-label="Mostrar senha"
+                aria-pressed="false"
+              >
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M1.5 12s3.8-6 10.5-6 10.5 6 10.5 6-3.8 6-10.5 6S1.5 12 1.5 12Z"/>
+                  <circle cx="12" cy="12" r="3.4"/>
+                </svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"/>
+                  <path d="M1.5 12s3.8-6 10.5-6c2.1 0 4 .6 5.6 1.5M22.5 12s-3.8 6-10.5 6c-2.1 0-4-.6-5.6-1.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="login-label" for="registerPasswordConfirm">Confirmar senha</label>
+            <div class="password-wrap">
+              <input class="login-input" id="registerPasswordConfirm" type="password" autocomplete="new-password" required placeholder="Repita sua senha">
+              <button
+                class="password-toggle"
+                type="button"
+                data-password-toggle
+                data-target="registerPasswordConfirm"
+                aria-label="Mostrar senha"
+                aria-pressed="false"
+              >
+                <svg class="icon-eye" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M1.5 12s3.8-6 10.5-6 10.5 6 10.5 6-3.8 6-10.5 6S1.5 12 1.5 12Z"/>
+                  <circle cx="12" cy="12" r="3.4"/>
+                </svg>
+                <svg class="icon-eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"/>
+                  <path d="M1.5 12s3.8-6 10.5-6c2.1 0 4 .6 5.6 1.5M22.5 12s-3.8 6-10.5 6c-2.1 0-4-.6-5.6-1.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button class="login-submit" id="registerSubmit" type="submit">Criar Conta</button>
+
+          <div class="social-auth">
+            <p class="social-auth-label">ou cadastrar com</p>
+            <div class="social-auth-grid">
+              <button class="social-btn" type="button" data-social-provider="google" aria-label="Cadastrar com Google">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <path fill="#FFC107" d="M43.61 20.08H42V20H24v8h11.3C33.65 32.66 29.19 36 24 36c-6.63 0-12-5.37-12-12s5.37-12 12-12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20c0-1.34-.14-2.65-.39-3.92z"/>
+                  <path fill="#FF3D00" d="M6.31 14.69l6.57 4.82C14.65 15.11 18.96 12 24 12c3.06 0 5.84 1.15 7.96 3.04l5.66-5.66C34.05 6.05 29.27 4 24 4 16.32 4 9.71 8.34 6.31 14.69z"/>
+                  <path fill="#4CAF50" d="M24 44c5.17 0 9.86-1.98 13.41-5.19l-6.19-5.24C29.16 35.09 26.72 36 24 36c-5.17 0-9.62-3.33-11.28-7.95l-6.52 5.03C9.56 39.56 16.23 44 24 44z"/>
+                  <path fill="#1976D2" d="M43.61 20.08H42V20H24v8h11.3c-.79 2.24-2.23 4.17-4.08 5.57l6.19 5.24C36.97 39.2 44 34 44 24c0-1.34-.14-2.65-.39-3.92z"/>
+                </svg>
+                <span>Google</span>
+              </button>
+
+              <button class="social-btn" type="button" data-social-provider="github" aria-label="Cadastrar com GitHub">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#FFFFFF" d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.6.1 2.7-.6.1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.4-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.2 11.2 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.9 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.3.8 1 .8 2v3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
+                </svg>
+                <span>GitHub</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="auth-switch">
+            Ja tem conta?
+            <a href="login.html" class="auth-switch-link">Entrar</a>
+          </p>
+
+          <p class="login-feedback" id="registerFeedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </aside>
+  </main>
+
+  <script src="../src/js/api.js?v=20260418-4"></script>
+  <script src="../src/js/auth.js?v=20260418-4"></script>
+  <script src="../src/js/register.js?v=20260418-2"></script>
+</body>
+</html>
+

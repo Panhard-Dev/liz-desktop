@@ -1,0 +1,585 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planos Liz</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-top.png?v=2">
+<link rel="shortcut icon" href="favicon-top.png?v=2">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --bg:#09090f;
+  --card:#0d0d1a;
+  --card-feat:#0f0f22;
+  --purple:#8b5cf6;
+  --purple-l:#a78bfa;
+  --purple-dim:#534AB7;
+  --pglow:rgba(139,92,246,0.12);
+  --pborder:rgba(139,92,246,0.2);
+  --pborder-h:rgba(167,139,250,0.45);
+  --text:#ede9fe;
+  --sec:#7b7a9e;
+  --muted:#3a3a58;
+  --green:#34d399;
+  --bsub:rgba(255,255,255,0.05);
+}
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  overflow:auto;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(167,139,250,0.65) rgba(255,255,255,0.06);
+}
+
+html{scrollbar-gutter:stable;}
+html::-webkit-scrollbar,body::-webkit-scrollbar{width:10px;height:10px;}
+html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.05);
+}
+html::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(167,139,250,0.9),rgba(139,92,246,0.8));
+  border-radius:999px;
+  border:2px solid rgba(9,9,15,0.75);
+}
+html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{
+  background:linear-gradient(180deg,rgba(196,181,253,0.95),rgba(167,139,250,0.9));
+}
+html::-webkit-scrollbar-button,body::-webkit-scrollbar-button{display:none;width:0;height:0;}
+
+/* full-screen layout */
+.shell{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  height:auto;
+  position:relative;
+  overflow:visible;
+}
+
+/* ambient bg */
+.shell::before{
+  content:'';
+  position:absolute;
+  top:-30%;left:50%;
+  transform:translateX(-50%);
+  width:700px;height:420px;
+  background:radial-gradient(ellipse,rgba(139,92,246,0.16) 0%,transparent 68%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── TOP ── */
+.top{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 32px;
+  border-bottom:1px solid var(--pborder);
+  position:relative;z-index:2;
+  background:rgba(9,9,15,0.7);
+  backdrop-filter:blur(10px);
+}
+
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-sq{
+  width:22px;height:22px;
+  background:transparent;
+  border-radius:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-icon{width:22px;height:22px;object-fit:contain;}
+.logo-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);letter-spacing:0.03em;}
+
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--sec);
+  background:transparent;border:1px solid var(--pborder);
+  border-radius:8px;padding:6px 13px;
+  cursor:pointer;transition:all 0.18s;
+  font-family:'DM Sans',sans-serif;
+  text-decoration:none;
+}
+.back-btn:hover{color:var(--text);border-color:var(--pborder-h);background:var(--pglow);}
+.back-btn svg{width:13px;height:13px;}
+
+/* ── MIDDLE (hero + cards) ── */
+.mid{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:12px 20px 8px;
+  position:relative;z-index:1;
+  gap:18px;
+}
+
+/* plan selector */
+.plan-menu{display:flex;justify-content:center;width:100%;}
+.plan-tabs{
+  display:inline-flex;align-items:center;gap:0;
+  border:1px solid var(--pborder);
+  border-radius:999px;
+  background:rgba(9,9,15,0.75);
+  padding:4px;
+}
+.plan-btn{
+  border:0;background:transparent;color:var(--sec);
+  min-width:110px;
+  padding:10px 14px;
+  border-radius:999px;
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:500;
+  cursor:pointer;transition:all 0.2s;
+}
+.plan-btn.active{
+  background:#f4f1ff;
+  color:#11111a;
+  box-shadow:0 8px 24px rgba(244,241,255,0.16);
+}
+
+/* hero */
+.hero{text-align:center;}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(20px,3.2vw,34px);
+  font-weight:800;
+  color:var(--text);
+  letter-spacing:-0.02em;
+  line-height:1.15;
+  margin-bottom:6px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--purple-l),#c4b5fd);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{font-size:13px;color:var(--sec);font-weight:300;}
+
+/* toggle */
+.toggle-row{
+  display:flex;align-items:center;gap:10px;
+}
+.t-label{font-size:13px;color:var(--muted);transition:color 0.2s;}
+.t-label.on{color:var(--text);font-weight:500;}
+.t-track{
+  width:40px;height:22px;
+  background:var(--purple-dim);
+  border-radius:11px;
+  cursor:pointer;
+  position:relative;
+  border:1px solid var(--pborder-h);
+  transition:background 0.2s;
+  flex-shrink:0;
+}
+.t-thumb{
+  width:16px;height:16px;
+  background:#fff;border-radius:50%;
+  position:absolute;top:2px;left:2px;
+  transition:transform 0.22s cubic-bezier(.4,0,.2,1);
+}
+.t-track.on .t-thumb{transform:translateX(18px);}
+.discount-pill{
+  font-size:11px;font-weight:500;
+  color:var(--green);
+  background:rgba(52,211,153,0.1);
+  border:1px solid rgba(52,211,153,0.22);
+  border-radius:20px;padding:2px 9px;
+}
+
+/* ── CARDS ── */
+.cards{
+  display:block;
+  width:100%;
+  max-width:560px;
+}
+.cards > .card{display:none !important;}
+.cards[data-current-plan="pro"] > .card[data-plan="pro"]{display:flex !important;}
+.cards[data-current-plan="max"] > .card[data-plan="max"]{display:flex !important;}
+.cards[data-current-plan="ultra"] > .card[data-plan="ultra"]{display:flex !important;}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--bsub);
+  border-radius:16px;
+  padding:20px 18px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  transition:border-color 0.2s,box-shadow 0.2s;
+  position:relative;overflow:hidden;
+}
+.card:hover{border-color:var(--pborder);box-shadow:0 8px 28px rgba(0,0,0,0.2);}
+.card.active{display:flex;}
+.card + .card{margin-top:12px;}
+
+.card.feat{
+  background:var(--card-feat);
+  border:1.5px solid var(--purple-dim);
+  transform:none !important;
+}
+.card.feat:hover{border-color:var(--purple);transform:none !important;}
+.card.feat::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--purple),var(--purple-l),transparent);
+}
+
+/* card header */
+.c-badge{
+  display:inline-flex;align-self:flex-start;
+  font-size:10px;font-weight:500;letter-spacing:0.04em;
+  border-radius:20px;padding:2px 9px;
+}
+.b-pro{background:rgba(139,92,246,0.12);color:var(--purple-l);border:1px solid var(--pborder);}
+.b-max{background:var(--purple-dim);color:#CECBF6;}
+.b-ultra{background:rgba(0,0,0,0.5);color:var(--purple-l);border:1px solid rgba(139,92,246,0.35);}
+
+.c-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-top:2px;}
+.c-desc{font-size:12px;color:var(--sec);font-weight:300;line-height:1.5;}
+
+/* price */
+.c-price{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap;}
+.p-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;color:var(--text);}
+.p-per{font-size:12px;color:var(--muted);}
+.p-old{font-size:11px;color:var(--muted);text-decoration:line-through;margin-left:4px;opacity:0;transition:opacity 0.3s;}
+.p-old.show{opacity:1;}
+
+.c-sep{height:1px;background:var(--bsub);}
+
+/* features */
+.c-feats{display:flex;flex-direction:column;gap:8px;flex:1;}
+.feat{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--sec);line-height:1.4;}
+.feat svg{width:14px;height:14px;flex-shrink:0;margin-top:1px;}
+.feat.ok svg{color:var(--green);}
+.feat.no{opacity:0.4;}
+.feat.no svg{color:var(--muted);}
+.feat b{color:var(--text);font-weight:500;}
+
+/* cta */
+.c-btn{
+  width:100%;padding:10px;
+  border-radius:10px;
+  font-size:13px;font-weight:500;
+  cursor:pointer;
+  transition:all 0.18s;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-outline{background:transparent;border:1px solid rgba(139,92,246,0.25);color:var(--sec);}
+.btn-outline:hover{border-color:var(--pborder-h);color:var(--text);background:var(--pglow);}
+.btn-purple{background:var(--purple);border:none;color:#fff;box-shadow:0 0 20px rgba(139,92,246,0.3);}
+.btn-purple:hover{background:var(--purple-l);box-shadow:0 0 28px rgba(167,139,250,0.4);}
+.btn-dark{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.3);color:var(--purple-l);}
+.btn-dark:hover{background:rgba(139,92,246,0.15);border-color:var(--purple);}
+
+/* ── BOTTOM ── */
+.bot{
+  flex-shrink:0;
+  text-align:center;
+  padding:8px 20px 12px;
+  position:relative;z-index:2;
+  border-top:1px solid var(--bsub);
+}
+.bot p{font-size:11px;color:var(--muted);}
+.bot a{color:var(--purple-l);text-decoration:none;}
+.bot a:hover{text-decoration:underline;}
+
+/* ── MOBILE ── */
+@media(max-width:700px){
+  html,body{overflow:auto;}
+  .shell{height:auto;overflow:visible;}
+  .top{padding:12px 16px;}
+  .mid{padding:20px 14px 16px;gap:16px;justify-content:flex-start;}
+  .plan-tabs{width:min(420px,100%);}
+  .plan-btn{flex:1;min-width:0;padding:10px 8px;font-size:13px;}
+  .cards{max-width:420px;}
+  .card.feat{transform:none;}
+  .card.feat:hover{transform:translateY(-2px);}
+  .hero h1{font-size:22px;}
+}
+
+@media(min-width:701px) and (max-width:900px){
+  .hero h1{font-size:24px;}
+  .cards{max-width:520px;}
+  .p-val{font-size:22px;}
+  .c-name{font-size:16px;}
+  .c-feats{gap:6px;}
+  .feat{font-size:11px;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- TOP -->
+  <div class="top">
+    <a class="logo" href="#">
+      <div class="logo-sq"><img src="img/crown-logo.png" alt="Liz" class="logo-icon"></div>
+      <span class="logo-name">Planos Liz</span>
+    </a>
+    <a class="back-btn" href="index.html" id="backToChatBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      Voltar ao chat
+    </a>
+  </div>
+
+  <!-- MIDDLE -->
+  <div class="mid">
+
+    <div class="plan-menu">
+      <div class="plan-tabs" role="tablist" aria-label="Selecionar plano">
+        <button class="plan-btn active" data-plan-target="pro" type="button">Liz Pro</button>
+        <button class="plan-btn" data-plan-target="max" type="button">Liz Max</button>
+        <button class="plan-btn" data-plan-target="ultra" type="button">Liz Ultra</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>Escolha seu plano<br><em>e potencialize a Liz</em></h1>
+      <p>Cancele quando quiser · Sem taxas ocultas</p>
+    </div>
+
+    <div class="toggle-row">
+      <span class="t-label on" id="lm">Mensal</span>
+      <div class="t-track" id="tt"><div class="t-thumb"></div></div>
+      <span class="t-label" id="la">Anual</span>
+      <span class="discount-pill">−20%</span>
+    </div>
+
+    <div class="cards" data-current-plan="pro">
+
+      <!-- PRO -->
+      <div class="card active" data-plan="pro">
+        <div>
+          <span class="c-badge b-pro">Liz Pro</span>
+          <div class="c-name">Pro</div>
+          <div class="c-desc">Mais velocidade e contexto no dia a dia.</div>
+        </div>
+        <div class="c-price">
+          <span class="p-val" id="vp">R$ 19,90</span>
+          <span class="p-per">/mês</span>
+          <span class="p-old" id="op">R$ 19,90</span>
+        </div>
+        <div class="c-sep"></div>
+        <div class="c-feats">
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>240.000 tokens por mês</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Mensagens: 100 tokens por ação (~80 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Imagens: 200 tokens por ação (~40 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>PDF/Arquivos: 100 tokens por ação (~80 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Suporte padrão (24h)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Leitura de arquivos: 320 tokens (~25 por dia)</div>
+          <div class="feat no"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="2.5" y1="2.5" x2="11.5" y2="11.5"/><line x1="11.5" y1="2.5" x2="2.5" y2="11.5"/></svg>Acesso antecipado</div>
+          <div class="feat no"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="2.5" y1="2.5" x2="11.5" y2="11.5"/><line x1="11.5" y1="2.5" x2="2.5" y2="11.5"/></svg>Rede social privada</div>
+        </div>
+        <button class="c-btn btn-outline" onclick="choose('Pro')">Começar com Pro</button>
+      </div>
+
+      <!-- MAX -->
+      <div class="card feat" data-plan="max">
+        <div>
+          <span class="c-badge b-max">Mais popular</span>
+          <div class="c-name">Max</div>
+          <div class="c-desc">Contexto ampliado e acesso antecipado incluído.</div>
+        </div>
+        <div class="c-price">
+          <span class="p-val" id="vm">R$ 49,90</span>
+          <span class="p-per">/mês</span>
+          <span class="p-old" id="om">R$ 49,90</span>
+        </div>
+        <div class="c-sep"></div>
+        <div class="c-feats">
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>300.000 tokens por mês</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Mensagens: 60 tokens por ação (~165 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Imagens: 150 tokens por ação (~100 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>PDF/Arquivos: 100 tokens por ação (~100 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Suporte prioritário (6h)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Leitura de arquivos: 180 tokens (~55 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg><b>Acesso antecipado</b></div>
+          <div class="feat no"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="2.5" y1="2.5" x2="11.5" y2="11.5"/><line x1="11.5" y1="2.5" x2="2.5" y2="11.5"/></svg>Rede social privada</div>
+        </div>
+        <button class="c-btn btn-purple" onclick="choose('Max')">Começar com Max</button>
+      </div>
+
+      <!-- ULTRA -->
+      <div class="card" data-plan="ultra">
+        <div>
+          <span class="c-badge b-ultra">Liz Ultra</span>
+          <div class="c-name">Ultra</div>
+          <div class="c-desc">Acesso completo, fila VIP e rede exclusiva.</div>
+        </div>
+        <div class="c-price">
+          <span class="p-val" id="vu">R$ 99,90</span>
+          <span class="p-per">/mês</span>
+          <span class="p-old" id="ou">R$ 99,90</span>
+        </div>
+        <div class="c-sep"></div>
+        <div class="c-feats">
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>675.000 tokens no ciclo Ultra</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Mensagens: 30 tokens por ação (~500 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Imagens: 150 tokens por ação (~100 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>PDF/Arquivos: 50 tokens por ação (~300 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Suporte <b>VIP 24/7</b></div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg>Leitura de arquivos: 75 tokens (~250 por dia)</div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg><b>Acesso antecipado</b></div>
+          <div class="feat ok"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="1.5 7 5 10.5 12.5 3"/></svg><b>Tokens Ultra seguem ativos até acabar</b></div>
+        </div>
+        <button class="c-btn btn-dark" onclick="choose('Ultra')">Começar com Ultra</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bot">
+    <p>Cancele a qualquer momento · <a href="#">Termos</a> · <a href="#">Privacidade</a></p>
+  </div>
+
+</div>
+
+<script>
+  const AUTH_STORAGE_KEY = 'liz_auth_session_v3';
+  const P = {
+    pro:   {m:'R$ 19,90', a:'R$ 15,92'},
+    max:   {m:'R$ 49,90', a:'R$ 39,92'},
+    ultra: {m:'R$ 99,90', a:'R$ 79,92'},
+  };
+  const CHECKOUTS = {
+    pro: {
+      m: 'https://pay.cakto.com.br/k7nskeb_773256',
+      a: ''
+    },
+    max: { m: 'https://pay.cakto.com.br/82xyjeu_773335', a: '' },
+    ultra: { m: 'https://pay.cakto.com.br/gitfe2d_844972', a: '' }
+  };
+  let ann = false;
+  const tt = document.getElementById('tt');
+  const planButtons = Array.from(document.querySelectorAll('[data-plan-target]'));
+  const cardsRoot = document.querySelector('.cards');
+  const backToChatBtn = document.getElementById('backToChatBtn');
+
+  function readStoredSession(){
+    try{
+      const raw = window.localStorage.getItem(AUTH_STORAGE_KEY);
+      if(!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    }catch(error){
+      return null;
+    }
+  }
+
+  function readAccountEmail(){
+    const session = readStoredSession();
+    return String(session?.user?.email || '').trim();
+  }
+
+  function readAccountName(){
+    const session = readStoredSession();
+    const candidates = [
+      session?.user?.name,
+      session?.user?.full_name,
+      session?.user?.display_name,
+      session?.user?.user_metadata?.name,
+      session?.user?.user_metadata?.full_name,
+    ];
+    for(const candidate of candidates){
+      const value = String(candidate || '').trim();
+      if(value) return value;
+    }
+    return '';
+  }
+
+  function setSearchParamIfMissing(url, key, value){
+    const safeKey = String(key || '').trim();
+    const safeValue = String(value || '').trim();
+    if(!safeKey || !safeValue) return;
+    if(url.searchParams.has(safeKey)) return;
+    url.searchParams.set(safeKey, safeValue);
+  }
+
+  function buildCheckoutUrl(baseUrl){
+    const rawBaseUrl = String(baseUrl || '').trim();
+    if(!rawBaseUrl) return '';
+    try{
+      const checkoutUrl = new URL(rawBaseUrl);
+      const email = readAccountEmail();
+      const name = readAccountName();
+
+      if(email){
+        setSearchParamIfMissing(checkoutUrl, 'email', email);
+        setSearchParamIfMissing(checkoutUrl, 'customer_email', email);
+        setSearchParamIfMissing(checkoutUrl, 'customer[email]', email);
+      }
+
+      if(name){
+        setSearchParamIfMissing(checkoutUrl, 'name', name);
+        setSearchParamIfMissing(checkoutUrl, 'customer[name]', name);
+      }
+
+      return checkoutUrl.toString();
+    }catch(error){
+      return rawBaseUrl;
+    }
+  }
+
+  function update() {
+    const k = ann ? 'a' : 'm';
+    [['vp','op','pro'],['vm','om','max'],['vu','ou','ultra']].forEach(([vi,oi,pl])=>{
+      document.getElementById(vi).textContent = P[pl][k];
+      const o = document.getElementById(oi);
+      o.textContent = P[pl].m;
+      o.classList.toggle('show', ann);
+    });
+    document.getElementById('lm').classList.toggle('on', !ann);
+    document.getElementById('la').classList.toggle('on', ann);
+    tt.classList.toggle('on', ann);
+  }
+
+  function setPlan(planId){
+    const safe = String(planId || '').toLowerCase();
+    planButtons.forEach(btn=>{
+      const on = btn.dataset.planTarget === safe;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', String(on));
+    });
+    if(cardsRoot) cardsRoot.dataset.currentPlan = safe;
+  }
+
+  tt.addEventListener('click', ()=>{ ann=!ann; update(); });
+  planButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=>setPlan(btn.dataset.planTarget));
+  });
+  setPlan('pro');
+
+  if(backToChatBtn){
+    backToChatBtn.addEventListener('click', (event)=>{
+      const sameOriginRef = document.referrer && document.referrer.includes(window.location.host);
+      if(sameOriginRef && window.history.length > 1){
+        event.preventDefault();
+        window.history.back();
+      }
+    });
+  }
+
+  function choose(p){
+    const key = String(p || '').trim().toLowerCase();
+    const checkout = buildCheckoutUrl(CHECKOUTS[key]?.[ann ? 'a' : 'm'] || '');
+    if(!checkout){
+      alert('Checkout ainda nao configurado para esse plano/ciclo.');
+      return;
+    }
+    window.location.href = checkout;
+  }
+</script>
+</body>
+</html>

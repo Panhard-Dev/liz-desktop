@@ -14,22 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Detect app dir
-        id: appdir
-        run: |
-          if [ -f "desktop-tauri/package.json" ]; then
-            echo "dir=desktop-tauri" >> "$GITHUB_OUTPUT"
-          elif [ -f "package.json" ]; then
-            echo "dir=." >> "$GITHUB_OUTPUT"
-          else
-            echo "Nenhum package.json encontrado no repo." >&2
-            exit 1
-          fi
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: desktop-tauri/package-lock.json
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -45,23 +35,13 @@ jobs:
             rpm \
             patchelf
 
-      - name: Install dependencies
-        working-directory: ${{ steps.appdir.outputs.dir }}
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+      - name: Install desktop-tauri dependencies
+        working-directory: desktop-tauri
+        run: npm ci
 
-      - name: Build Linux bundles
-        working-directory: ${{ steps.appdir.outputs.dir }}
-        run: |
-          if npm run | grep -q "build:linux"; then
-            npm run build:linux
-          else
-            npx tauri build --bundles appimage,deb,rpm
-          fi
+      - name: Build Linux bundles (AppImage + deb + rpm)
+        working-directory: desktop-tauri
+        run: npm run build:linux
 
       - name: Upload Linux artifacts
         uses: actions/upload-artifact@v4
@@ -69,6 +49,6 @@ jobs:
           name: liz-linux-bundles
           if-no-files-found: error
           path: |
-            ${{ steps.appdir.outputs.dir }}/src-tauri/target/release/bundle/appimage/**
-            ${{ steps.appdir.outputs.dir }}/src-tauri/target/release/bundle/deb/**
-            ${{ steps.appdir.outputs.dir }}/src-tauri/target/release/bundle/rpm/**
+            desktop-tauri/src-tauri/target/release/bundle/appimage/**
+            desktop-tauri/src-tauri/target/release/bundle/deb/**
+            desktop-tauri/src-tauri/target/release/bundle/rpm/**

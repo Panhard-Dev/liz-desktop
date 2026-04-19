@@ -1,0 +1,17 @@
+/login
+  Cache-Control: no-store
+
+/login.html
+  Cache-Control: no-store
+
+/crown-stream
+  Cache-Control: no-store
+
+/crown-stream.html
+  Cache-Control: no-store
+
+/src/js/crown-stream.js
+  Cache-Control: no-store
+
+/src/styles/crown-stream.css
+  Cache-Control: no-store

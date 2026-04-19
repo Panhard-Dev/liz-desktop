@@ -1,0 +1,360 @@
+<main class="content has-input workspace-mode-chat" id="workspaceContent">
+  <div class="workspace-views">
+    <section class="workspace-view workspace-view-chat active" data-workspace-view="chat">
+      <div class="greeting">
+        <h1>No que voce esta <span>trabalhando?</span></h1>
+      </div>
+
+      <div class="chat-container" id="chatContainer" aria-live="polite"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="search" aria-hidden="true" hidden>
+      <div class="search-header">
+        <h2>Buscar em chats</h2>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input class="search-input" id="searchInput" type="text" placeholder="Buscar por palavra-chave..." autocomplete="off">
+        </div>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="images" aria-hidden="true" hidden>
+      <div class="img-page-title">Imagens</div>
+      <div class="img-prompt-box">
+        <textarea class="img-prompt-field" id="imgPromptField" placeholder="Descreva uma nova imagem" rows="1"></textarea>
+        <div class="img-attachment-tray" id="imgAttachmentTray" aria-live="polite"></div>
+        <div class="img-prompt-bar">
+          <div class="img-prompt-bar-left">
+            <button class="attach-btn img-attach-btn" id="imgAttachBtn" type="button" aria-label="Anexar imagem">+</button>
+            <input class="img-file-input" id="imgFileInput" type="file" accept="image/*" multiple hidden>
+
+            <div class="img-style-switch" id="imgStyleSwitch">
+              <button class="img-style-pill" id="imgStyleBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <path d="M21 15l-5-5L5 21"></path>
+                </svg>
+                <span id="imgStyleLabel">Estilo</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="10" height="10">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </button>
+
+              <div class="img-style-dropdown" id="imgStyleDropdown" role="listbox" aria-label="Selecionar estilo de imagem" aria-hidden="true">
+                <button class="img-style-option selected" type="button" role="option" aria-selected="true" data-img-style-option data-style="Estilo">Estilo</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Trend de caricaturas">Trend de caricaturas</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Petalas de flores">Petalas de flores</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Ouro">Ouro</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Giz de cera">Giz de cera</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Aquarela">Aquarela</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Cyberpunk">Cyberpunk</button>
+              </div>
+            </div>
+          </div>
+          <button class="img-send-btn" id="imgSendBtn" type="button" aria-label="Enviar prompt de imagem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5M5 12l7-7 7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="img-chat-list" id="imgChatList" aria-live="polite"></div>
+
+      <div class="img-discovery img-preset-wrap" id="imgDiscovery">
+        <div class="img-section">
+          <div class="img-section-header">
+            <span class="img-section-title">De um estilo pra sua imagem</span>
+          </div>
+          <div class="img-preset-grid">
+            <button class="img-preset-card" type="button" data-img-preset="preset1" aria-label="Usar prompt 1">
+              <img class="img-preset-thumb" src="img/preset-1.jpg?v=1" alt="Imagem preset 1">
+              <span class="img-preset-caption">Preset 1 - cena principal</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset2" aria-label="Usar prompt 2">
+              <img class="img-preset-thumb" src="img/preset-2.jpg?v=1" alt="Imagem preset 2">
+              <span class="img-preset-caption">Preset 2 - retrato tech</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset3" aria-label="Usar prompt 3">
+              <img class="img-preset-thumb" src="img/preset-3.jpg?v=1" alt="Imagem preset 3">
+              <span class="img-preset-caption">Preset 3 - composicao</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset4" aria-label="Usar prompt 4">
+              <img class="img-preset-thumb" src="img/imagens.jpg?v=1" alt="Imagem preset 4">
+              <span class="img-preset-caption">Preset 4 - surreal completo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="gallery" aria-hidden="true" hidden>
+      <div class="gal-topbar">
+        <h2>Galeria</h2>
+        <div class="gal-topbar-right">
+          <div class="gal-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input class="gal-search" id="galSearch" type="text" placeholder="Buscar" autocomplete="off">
+          </div>
+          <button class="gal-upload-btn" id="galUploadBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <path d="M7 10l5 5 5-5"></path>
+              <path d="M12 15V3"></path>
+            </svg>
+            Carregar
+          </button>
+          <input class="gal-file-input" id="galFileInput" type="file" multiple hidden>
+        </div>
+      </div>
+
+      <div class="gal-tabs-row">
+        <div class="gal-tab-group">
+          <button class="gal-tab active" type="button" data-tab="tudo">Tudo</button>
+          <button class="gal-tab" type="button" data-tab="imagens">Imagens</button>
+          <button class="gal-tab" type="button" data-tab="arquivos">Arquivos</button>
+        </div>
+        <div class="gal-view-btns">
+          <button
+            class="gal-view-btn"
+            id="galFilterBtn"
+            type="button"
+            title="Filtrar: todos os arquivos"
+            aria-pressed="false"
+            data-gallery-view-btn="filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="11" y1="18" x2="13" y2="18"></line>
+            </svg>
+          </button>
+          <button
+            class="gal-view-btn"
+            id="galGridBtn"
+            type="button"
+            title="Grid"
+            aria-pressed="false"
+            data-gallery-view-btn="grid">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
+          </button>
+          <button
+            class="gal-view-btn active"
+            id="galListBtn"
+            type="button"
+            title="Lista"
+            aria-pressed="true"
+            data-gallery-view-btn="list">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="gal-col-heads">
+        <div class="gal-col-head">Nome</div>
+        <div class="gal-col-head sort">Modificado</div>
+        <div class="gal-col-head">Tamanho</div>
+        <div class="gal-col-head"></div>
+      </div>
+      <div class="gal-list" id="galList"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="apps" aria-hidden="true" hidden>
+      <div class="apps-hero">
+        <h2>LIZ <span>Apps</span></h2>
+        <p>Explore extensoes e utilitarios premium do ecossistema Liz.</p>
+      </div>
+      <div class="apps-cards-grid" id="appsCardsGrid"></div>
+    </section>
+  </div>
+
+  <div class="input-area">
+    <div class="input-stack">
+      <div class="input-box">
+        <textarea class="input-field" id="inputField" placeholder="Pergunte alguma coisa" rows="1"></textarea>
+      <div class="chat-attachment-tray" id="chatAttachmentTray" aria-live="polite"></div>
+      <div class="input-toolbar">
+        <div class="left-tools">
+          <div class="chat-plus-menu" id="chatPlusMenu">
+            <button
+              class="attach-btn chat-plus-trigger"
+              id="chatAttachBtn"
+              type="button"
+              aria-label="Abrir menu de modos"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              +
+            </button>
+            <div class="chat-plus-dropdown" id="chatPlusDropdown" role="menu" aria-hidden="true">
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="files">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"></path>
+                    <path d="M7 10l5-5 5 5"></path>
+                    <path d="M5 19h14"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Carregar anexo</span>
+                  <span class="chat-plus-option-subtitle">Arquivo, imagem, vídeo</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="folder">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3.5 7.5h6l2 2H20.5v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"></path>
+                    <path d="M3.5 7.5v-1a2 2 0 0 1 2-2h4l2 2"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Carregar pasta</span>
+                  <span class="chat-plus-option-subtitle">Importar arquivos de uma pasta</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="imagine">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Imagina</span>
+                  <span class="chat-plus-option-subtitle">Criar imagens com prompts</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="docs">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 3h7l5 5v13H7z"></path>
+                    <path d="M14 3v5h5"></path>
+                    <path d="M10 14h6M10 18h4"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Docs</span>
+                  <span class="chat-plus-option-subtitle">Abrir documentos e anexos</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="explore">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Explora</span>
+                  <span class="chat-plus-option-subtitle">Ver apps e atalhos</span>
+                </span>
+              </button>
+              <button
+                class="chat-plus-option chat-plus-option-more"
+                type="button"
+                role="menuitem"
+                data-chat-plus-mode="more"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="12" r="1.5"></circle>
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <circle cx="18" cy="12" r="1.5"></circle>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Mais</span>
+                  <span class="chat-plus-option-subtitle">Mais atalhos</span>
+                </span>
+                <svg class="chat-plus-more-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 6l6 6-6 6"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="chat-plus-submenu" id="chatPlusSubmenu" role="menu" aria-hidden="true">
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="search">
+                <span>Buscar</span>
+              </button>
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="gallery">
+                <span>Galeria</span>
+              </button>
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="new-chat">
+                <span>Novo chat</span>
+              </button>
+            </div>
+          </div>
+          <div class="chat-mode-tray" id="chatModeTray" aria-live="polite"></div>
+          <input class="chat-file-input" id="chatFileInput" type="file" multiple hidden>
+          <div class="chat-model-switch model-switch" data-model-switch>
+            <button class="chat-model-btn" type="button" data-model-trigger aria-label="Selecionar modelo do chat" aria-haspopup="listbox" aria-expanded="false">
+              <svg class="chat-model-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8.2"></circle>
+                <path d="M12 7.6v4.9l3.1 1.9"></path>
+              </svg>
+              <span data-model-current>Liz mini</span>
+              <svg class="chat-model-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="model-dropdown chat-model-dropdown" data-model-dropdown role="listbox" aria-label="Selecionar versao da Liz no chat" aria-hidden="true">
+              <button class="model-option" type="button" role="option" data-model-option data-model="Liz 2.5" aria-selected="false">
+                <span class="model-option-label">Liz 2.5</span>
+                <span class="model-badge">DEV</span>
+              </button>
+              <button class="model-option" type="button" role="option" data-model-option data-model="Liz 2.3" aria-selected="false">
+                <span class="model-option-label">Liz 2.3</span>
+              </button>
+              <button class="model-option selected" type="button" role="option" data-model-option data-model="Liz mini" aria-selected="true">
+                <span class="model-option-label">Liz mini</span>
+                <span class="model-option-note">Versao padrao</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-tools">
+          <button class="spark-btn" id="sparkBtn" aria-label="Ativar modo Liz Flash">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m13 3-8 11h6l-1 7 9-12h-6l0-6z"></path>
+            </svg>
+          </button>
+          <button class="send-btn" aria-label="Enviar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5M5 12l7-7 7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="chat-image-modal" id="chatImageModal" hidden>
+    <button class="chat-image-modal-close" id="chatImageModalClose" type="button" aria-label="Fechar visualizacao">x</button>
+    <img class="chat-image-modal-img" id="chatImageModalImg" alt="Preview da imagem" />
+  </div>
+</main>

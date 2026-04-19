@@ -1,0 +1,1312 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="liz-api-base" content="https://liz-brasil-api.studiosluxgames.workers.dev/api/v1">
+  <meta name="liz-supabase-url" content="https://xrwqixhmkqjwivmqosfj.supabase.co">
+  <title>Liz Brasil</title>
+  <link rel="icon" type="image/png" href="favicon-top.png?v=1">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="../src/styles/global.css?v=20260418-5">
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">
+        <img src="img/crown-logo.png?v=2" alt="Logo Liz Brasil" class="logo-mark">
+      </div>
+    </div>
+    <button class="close-btn" id="closeBtn" aria-label="Fechar menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-item active" id="newChatBtn" data-sidebar-action="chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 5v14M5 12h14" />
+      </svg>
+      Novo chat
+    </div>
+    <div class="nav-item" id="searchChatsBtn" data-sidebar-action="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+      Buscar em chats
+    </div>
+    <div class="nav-item" id="imagesNavBtn" data-sidebar-action="images">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
+      Imagens
+    </div>
+    <div class="nav-item" id="galleryNavBtn" data-sidebar-action="gallery">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 9h18" />
+      </svg>
+      Galeria
+    </div>
+  </nav>
+
+  <div class="divider"></div>
+
+  <div class="section-label">
+    <span class="section-title">Conversas</span>
+    <button class="section-clear" id="clearAll" title="Limpar historico">limpar tudo</button>
+  </div>
+
+  <div id="historyContainer"></div>
+</aside>
+
+  <div class="main">
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="topbar-right">
+    <div class="settings-wrapper profile-wrapper" id="profileWrapper">
+      <button class="icon-btn" id="profileBtn" aria-label="Perfil" aria-haspopup="menu" aria-expanded="false">
+        <img
+          id="profileAvatarImage"
+          class="profile-avatar-image"
+          alt="Avatar do perfil"
+          hidden
+        />
+        <span id="profileAvatarFallback" class="profile-avatar-fallback" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </span>
+      </button>
+
+      <div class="settings-dropdown profile-dropdown" id="profileDropdown" role="menu" aria-hidden="true">
+        <div class="profile-dropdown-view profile-dropdown-main is-active" id="profileDropdownMain">
+          <div class="sd-item" id="profileAddAccountBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Adicionar outra conta
+          </div>
+          <div class="sd-item" id="profileSwitchAccountBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 3h5v5" />
+              <path d="M21 3l-6 6" />
+              <path d="M8 21H3v-5" />
+              <path d="M3 21l6-6" />
+              <path d="M11 5H8a3 3 0 0 0-3 3v3" />
+              <path d="M13 19h3a3 3 0 0 0 3-3v-3" />
+            </svg>
+            Trocar de conta
+          </div>
+          <div class="sd-divider"></div>
+
+          <div class="sd-item" id="profileMyProfileBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            Meu perfil
+          </div>
+          <div class="sd-item" id="profilePreferencesBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            Preferencias
+          </div>
+          <div class="sd-item" id="profileActivityBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 7h16M4 12h16M4 17h10" />
+            </svg>
+            Atividade
+          </div>
+          <div class="sd-item" id="profileUsageBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19h16" />
+              <path d="M7 16v-6" />
+              <path d="M12 16V8" />
+              <path d="M17 16v-3" />
+            </svg>
+            Limites de uso
+          </div>
+          <div class="sd-divider"></div>
+          <div class="sd-item sd-danger" id="profileLogoutBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+            Sair da conta
+          </div>
+        </div>
+
+        <div class="profile-dropdown-view profile-dropdown-accounts" id="profileAccountsMenu" hidden>
+          <div class="sd-item profile-back-item" id="profileAccountsBackBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            Voltar
+          </div>
+          <div class="profile-accounts-title" id="profileAccountsTitle">Contas conectadas</div>
+          <div class="profile-accounts-list" id="profileAccountsList"></div>
+          <div class="profile-accounts-empty" id="profileAccountsEmpty" hidden>Nenhuma conta conectada ainda.</div>
+          <p class="profile-accounts-feedback" id="profileAccountsFeedback" aria-live="polite"></p>
+          <div class="sd-divider"></div>
+          <div class="sd-item" id="profileAccountsAddBtn" role="menuitem" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Adicionar outra conta
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-wrapper" id="settingsWrapper">
+      <button class="icon-btn" id="settingsBtn" aria-label="Configuracoes" aria-haspopup="menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      </button>
+
+      <div class="settings-dropdown" id="settingsDropdown" role="menu" aria-hidden="true">
+        <a class="sd-item" id="sdUpgradePlan" role="menuitem" tabindex="0" href="planos.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+          Fazer upgrade do plano
+        </a>
+        <div class="sd-item" id="sdPersonalizacao" role="menuitem" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4" /><line x1="10" y1="4" x2="3" y2="4" /><line x1="21" y1="12" x2="12" y2="12" /><line x1="8" y1="12" x2="3" y2="12" /><line x1="21" y1="20" x2="16" y2="20" /><line x1="12" y1="20" x2="3" y2="20" /><line x1="14" y1="2" x2="14" y2="6" /><line x1="8" y1="10" x2="8" y2="14" /><line x1="16" y1="18" x2="16" y2="22" /></svg>
+          Personalizacao
+        </div>
+        <div class="sd-item" id="openSettingsPanel" role="menuitem" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+          Configuracoes
+        </div>
+        <div class="sd-divider"></div>
+        <div class="sd-item sd-arrow" id="sdHelp" role="menuitem" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" /></svg>
+          Ajuda
+          <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6" /></svg>
+        </div>
+        <div class="sd-item sd-danger" id="quickSettingsLogoutBtn" role="menuitem" tabindex="0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></svg>
+          Sair
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="content has-input workspace-mode-chat" id="workspaceContent">
+  <div class="workspace-views">
+    <section class="workspace-view workspace-view-chat active" data-workspace-view="chat">
+      <div class="greeting">
+        <h1>No que voce esta <span>trabalhando?</span></h1>
+      </div>
+
+      <div class="chat-container" id="chatContainer" aria-live="polite"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="search" aria-hidden="true" hidden>
+      <div class="search-header">
+        <h2>Buscar em chats</h2>
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input class="search-input" id="searchInput" type="text" placeholder="Buscar por palavra-chave..." autocomplete="off">
+        </div>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="images" aria-hidden="true" hidden>
+      <div class="img-page-title">Imagens</div>
+      <div class="img-prompt-box">
+        <textarea class="img-prompt-field" id="imgPromptField" placeholder="Descreva uma nova imagem" rows="1"></textarea>
+        <div class="img-attachment-tray" id="imgAttachmentTray" aria-live="polite"></div>
+        <div class="img-prompt-bar">
+          <div class="img-prompt-bar-left">
+            <button class="attach-btn img-attach-btn" id="imgAttachBtn" type="button" aria-label="Anexar imagem">+</button>
+            <input class="img-file-input" id="imgFileInput" type="file" accept="image/*" multiple hidden>
+
+            <div class="img-style-switch" id="imgStyleSwitch">
+              <button class="img-style-pill" id="imgStyleBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <path d="M21 15l-5-5L5 21"></path>
+                </svg>
+                <span id="imgStyleLabel">Estilo</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="10" height="10">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </button>
+
+              <div class="img-style-dropdown" id="imgStyleDropdown" role="listbox" aria-label="Selecionar estilo de imagem" aria-hidden="true">
+                <button class="img-style-option selected" type="button" role="option" aria-selected="true" data-img-style-option data-style="Estilo">Estilo</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Trend de caricaturas">Trend de caricaturas</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Petalas de flores">Petalas de flores</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Ouro">Ouro</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Giz de cera">Giz de cera</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Aquarela">Aquarela</button>
+                <button class="img-style-option" type="button" role="option" aria-selected="false" data-img-style-option data-style="Cyberpunk">Cyberpunk</button>
+              </div>
+            </div>
+          </div>
+          <button class="img-send-btn" id="imgSendBtn" type="button" aria-label="Enviar prompt de imagem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5M5 12l7-7 7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="img-chat-list" id="imgChatList" aria-live="polite"></div>
+
+      <div class="img-discovery img-preset-wrap" id="imgDiscovery">
+        <div class="img-section">
+          <div class="img-section-header">
+            <span class="img-section-title">De um estilo pra sua imagem</span>
+          </div>
+          <div class="img-preset-grid">
+            <button class="img-preset-card" type="button" data-img-preset="preset1" aria-label="Usar prompt 1">
+              <img class="img-preset-thumb" src="img/preset-1.jpg?v=1" alt="Imagem preset 1">
+              <span class="img-preset-caption">Preset 1 - cena principal</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset2" aria-label="Usar prompt 2">
+              <img class="img-preset-thumb" src="img/preset-2.jpg?v=1" alt="Imagem preset 2">
+              <span class="img-preset-caption">Preset 2 - retrato tech</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset3" aria-label="Usar prompt 3">
+              <img class="img-preset-thumb" src="img/preset-3.jpg?v=1" alt="Imagem preset 3">
+              <span class="img-preset-caption">Preset 3 - composicao</span>
+            </button>
+
+            <button class="img-preset-card" type="button" data-img-preset="preset4" aria-label="Usar prompt 4">
+              <img class="img-preset-thumb" src="img/imagens.jpg?v=1" alt="Imagem preset 4">
+              <span class="img-preset-caption">Preset 4 - surreal completo</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="gallery" aria-hidden="true" hidden>
+      <div class="gal-topbar">
+        <h2>Galeria</h2>
+        <div class="gal-topbar-right">
+          <div class="gal-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input class="gal-search" id="galSearch" type="text" placeholder="Buscar" autocomplete="off">
+          </div>
+          <button class="gal-upload-btn" id="galUploadBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <path d="M7 10l5 5 5-5"></path>
+              <path d="M12 15V3"></path>
+            </svg>
+            Carregar
+          </button>
+          <input class="gal-file-input" id="galFileInput" type="file" multiple hidden>
+        </div>
+      </div>
+
+      <div class="gal-tabs-row">
+        <div class="gal-tab-group">
+          <button class="gal-tab active" type="button" data-tab="tudo">Tudo</button>
+          <button class="gal-tab" type="button" data-tab="imagens">Imagens</button>
+          <button class="gal-tab" type="button" data-tab="arquivos">Arquivos</button>
+        </div>
+        <div class="gal-view-btns">
+          <button
+            class="gal-view-btn"
+            id="galFilterBtn"
+            type="button"
+            title="Filtrar: todos os arquivos"
+            aria-pressed="false"
+            data-gallery-view-btn="filter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="11" y1="18" x2="13" y2="18"></line>
+            </svg>
+          </button>
+          <button
+            class="gal-view-btn"
+            id="galGridBtn"
+            type="button"
+            title="Grid"
+            aria-pressed="false"
+            data-gallery-view-btn="grid">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+            </svg>
+          </button>
+          <button
+            class="gal-view-btn active"
+            id="galListBtn"
+            type="button"
+            title="Lista"
+            aria-pressed="true"
+            data-gallery-view-btn="list">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="gal-col-heads">
+        <div class="gal-col-head">Nome</div>
+        <div class="gal-col-head sort">Modificado</div>
+        <div class="gal-col-head">Tamanho</div>
+        <div class="gal-col-head"></div>
+      </div>
+      <div class="gal-list" id="galList"></div>
+    </section>
+
+    <section class="workspace-view" data-workspace-view="apps" aria-hidden="true" hidden>
+      <div class="apps-hero">
+        <h2>LIZ <span>Apps</span></h2>
+        <p>Explore extensoes e utilitarios premium do ecossistema Liz.</p>
+      </div>
+      <div class="apps-cards-grid" id="appsCardsGrid"></div>
+    </section>
+  </div>
+
+  <div class="input-area">
+    <div class="input-stack">
+      <div class="input-box">
+        <textarea class="input-field" id="inputField" placeholder="Pergunte alguma coisa" rows="1"></textarea>
+      <div class="chat-attachment-tray" id="chatAttachmentTray" aria-live="polite"></div>
+      <div class="input-toolbar">
+        <div class="left-tools">
+          <div class="chat-plus-menu" id="chatPlusMenu">
+            <button
+              class="attach-btn chat-plus-trigger"
+              id="chatAttachBtn"
+              type="button"
+              aria-label="Abrir menu de modos"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              +
+            </button>
+            <div class="chat-plus-dropdown" id="chatPlusDropdown" role="menu" aria-hidden="true">
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="files">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"></path>
+                    <path d="M7 10l5-5 5 5"></path>
+                    <path d="M5 19h14"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Carregar anexo</span>
+                  <span class="chat-plus-option-subtitle">Arquivo, imagem, vÃ­deo</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="folder">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3.5 7.5h6l2 2H20.5v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"></path>
+                    <path d="M3.5 7.5v-1a2 2 0 0 1 2-2h4l2 2"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Carregar pasta</span>
+                  <span class="chat-plus-option-subtitle">Importar arquivos de uma pasta</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="imagine">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Imagina</span>
+                  <span class="chat-plus-option-subtitle">Criar imagens com prompts</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="docs">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 3h7l5 5v13H7z"></path>
+                    <path d="M14 3v5h5"></path>
+                    <path d="M10 14h6M10 18h4"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Docs</span>
+                  <span class="chat-plus-option-subtitle">Abrir documentos e anexos</span>
+                </span>
+              </button>
+              <button class="chat-plus-option" type="button" role="menuitem" data-chat-plus-mode="explore">
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Explora</span>
+                  <span class="chat-plus-option-subtitle">Ver apps e atalhos</span>
+                </span>
+              </button>
+              <button
+                class="chat-plus-option chat-plus-option-more"
+                type="button"
+                role="menuitem"
+                data-chat-plus-mode="more"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <span class="chat-plus-option-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="12" r="1.5"></circle>
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <circle cx="18" cy="12" r="1.5"></circle>
+                  </svg>
+                </span>
+                <span class="chat-plus-option-body">
+                  <span class="chat-plus-option-title">Mais</span>
+                  <span class="chat-plus-option-subtitle">Mais atalhos</span>
+                </span>
+                <svg class="chat-plus-more-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 6l6 6-6 6"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="chat-plus-submenu" id="chatPlusSubmenu" role="menu" aria-hidden="true">
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="search">
+                <span>Buscar</span>
+              </button>
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="gallery">
+                <span>Galeria</span>
+              </button>
+              <button class="chat-plus-suboption" type="button" role="menuitem" data-chat-plus-submode="new-chat">
+                <span>Novo chat</span>
+              </button>
+            </div>
+          </div>
+          <div class="chat-mode-tray" id="chatModeTray" aria-live="polite"></div>
+          <input class="chat-file-input" id="chatFileInput" type="file" multiple hidden>
+          <div class="chat-model-switch model-switch" data-model-switch>
+            <button class="chat-model-btn" type="button" data-model-trigger aria-label="Selecionar modelo do chat" aria-haspopup="listbox" aria-expanded="false">
+              <svg class="chat-model-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8.2"></circle>
+                <path d="M12 7.6v4.9l3.1 1.9"></path>
+              </svg>
+              <span data-model-current>Liz mini</span>
+              <svg class="chat-model-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <div class="model-dropdown chat-model-dropdown" data-model-dropdown role="listbox" aria-label="Selecionar versao da Liz no chat" aria-hidden="true">
+              <button class="model-option" type="button" role="option" data-model-option data-model="Liz 2.5" aria-selected="false">
+                <span class="model-option-label">Liz 2.5</span>
+                <span class="model-badge">DEV</span>
+              </button>
+              <button class="model-option" type="button" role="option" data-model-option data-model="Liz 2.3" aria-selected="false">
+                <span class="model-option-label">Liz 2.3</span>
+              </button>
+              <button class="model-option selected" type="button" role="option" data-model-option data-model="Liz mini" aria-selected="true">
+                <span class="model-option-label">Liz mini</span>
+                <span class="model-option-note">Versao padrao</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-tools">
+          <button class="spark-btn" id="sparkBtn" aria-label="Ativar modo Liz Flash">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m13 3-8 11h6l-1 7 9-12h-6l0-6z"></path>
+            </svg>
+          </button>
+          <button class="send-btn" aria-label="Enviar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19V5M5 12l7-7 7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="chat-image-modal" id="chatImageModal" hidden>
+    <button class="chat-image-modal-close" id="chatImageModalClose" type="button" aria-label="Fechar visualizacao">x</button>
+    <img class="chat-image-modal-img" id="chatImageModalImg" alt="Preview da imagem" />
+  </div>
+</main>
+  </div>
+</div>
+
+<div class="settings-modal" id="settingsModal">
+  <div class="settings-panel">
+    <div class="settings-top">
+      <div class="settings-title">Configuracoes</div>
+      <button class="settings-close" id="closeSettingsPanel" aria-label="Fechar painel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-layout">
+      <aside class="settings-sidebar">
+        <nav class="settings-nav">
+          <div class="settings-nav-item active" data-tab="geral">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            Geral
+          </div>
+
+          <div class="settings-nav-item" data-tab="notificacoes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
+              <path d="M10 17a2 2 0 0 0 4 0" />
+            </svg>
+            Notificacoes
+          </div>
+
+          <div class="settings-nav-item" data-tab="personalizacao">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a9 9 0 1 0 9 9c0-1.1-.9-2-2-2h-3a2 2 0 0 1-2-2V5c0-1.1-.9-2-2-2z" />
+              <circle cx="7.5" cy="11.5" r="1" />
+              <circle cx="12" cy="7.5" r="1" />
+              <circle cx="16.5" cy="11.5" r="1" />
+            </svg>
+            Personalizacao
+          </div>
+
+          <div class="settings-nav-item" data-tab="conta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            Conta
+          </div>
+
+          <div class="settings-nav-item" data-tab="ajuda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+            Ajuda
+          </div>
+        </nav>
+      </aside>
+
+      <div class="settings-main">
+        <section class="settings-section active" id="tab-geral">
+          <h2>Geral</h2>
+
+          <div class="security-card" id="securityCard">
+            <button class="security-card-close" id="closeSecurityCard" aria-label="Fechar aviso">x</button>
+            <div class="security-card-head">
+              <div class="security-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 12l2 2 4-4" />
+                </svg>
+              </div>
+              <div>
+                <h3>Proteja sua conta</h3>
+                <p>Adicione autenticacao multifator para ajudar a proteger sua conta ao entrar.</p>
+                <button class="outline-btn" type="button">Configurar MFA</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Aparencia</div>
+                <div class="setting-label-desc">Escolha como a interface deve aparecer no sistema.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsThemeSelect" aria-label="Aparencia">
+                    <option value="system">Sistema</option>
+                    <option value="dark">Escuro</option>
+                    <option value="light">Claro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Cor de enfase</div>
+                <div class="setting-label-desc">Define a cor usada nos destaques e botoes.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsAccentSelect" aria-label="Cor de enfase">
+                    <option value="default">Padrao</option>
+                    <option value="purple_neon">Roxo neon</option>
+                    <option value="lilac_soft">Lilas suave</option>
+                    <option value="magenta">Magenta</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Idioma</div>
+                <div class="setting-label-desc">Idioma principal da interface.</div>
+              </div>
+              <div class="setting-control">
+                <div class="select-wrap">
+                  <select class="setting-select" id="settingsLanguageSelect" aria-label="Idioma">
+                    <option value="auto">Autodetectar</option>
+                    <option value="pt-BR">Portugues</option>
+                    <option value="en-US">English</option>
+                    <option value="es-ES">Espanol</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-notificacoes">
+          <h2>Notificacoes</h2>
+          <div class="settings-notify-subtitle">
+            Controle alertas visuais da Liz.
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Notificacoes do sistema</div>
+                <div class="setting-label-desc">Receber alertas importantes do aplicativo.</div>
+              </div>
+              <div class="setting-control">
+                <button
+                  class="toggle active"
+                  id="settingsNotificationsSystemToggle"
+                  type="button"
+                  aria-label="Alternar notificacoes"
+                  aria-pressed="true"
+                ></button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-personalizacao">
+          <h2>Personalizacao</h2>
+          <div class="settings-personal-subtitle">
+            Ajuste o estilo da Liz para combinar com seu ritmo. A ideia e deixar o chat mais leve, acolhedor e produtivo.
+          </div>
+
+          <div class="settings-personal-modes" id="settingsPersonalModes">
+            <button class="settings-personal-mode active" type="button" data-personalization-mode="acolhedora">
+              <span class="settings-personal-mode-title">Acolhedora</span>
+              <span class="settings-personal-mode-desc">Tom humano e calmo para conversar sem pressa.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="foco">
+              <span class="settings-personal-mode-title">Foco</span>
+              <span class="settings-personal-mode-desc">Mensagens diretas para acelerar suas entregas.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="criativa">
+              <span class="settings-personal-mode-title">Criativa</span>
+              <span class="settings-personal-mode-desc">Estilo inspirador para ideias e exploracoes.</span>
+            </button>
+            <button class="settings-personal-mode" type="button" data-personalization-mode="direta">
+              <span class="settings-personal-mode-title">Direta</span>
+              <span class="settings-personal-mode-desc">Objetividade maxima, sem rodeios.</span>
+            </button>
+          </div>
+
+          <div class="settings-personal-form">
+            <label class="settings-personal-label" for="settingsPersonalGreetingInput">
+              Mensagem inicial personalizada (opcional)
+            </label>
+            <input
+              class="settings-personal-input"
+              id="settingsPersonalGreetingInput"
+              type="text"
+              maxlength="120"
+              placeholder="Ex.: Vamos fechar essa tarefa hoje?"
+            />
+
+            <div class="settings-personal-use-name-row">
+              <div class="setting-label">
+                <div class="setting-label-title">Usar seu nome na saudacao</div>
+                <div class="setting-label-desc">Quando ativo, a Liz inicia falando com voce de forma mais proxima.</div>
+              </div>
+              <div class="setting-control">
+                <button
+                  class="toggle active"
+                  id="settingsPersonalUseNameToggle"
+                  type="button"
+                  aria-label="Usar nome na saudacao"
+                  aria-pressed="true"
+                ></button>
+              </div>
+            </div>
+
+            <div class="settings-personal-preview">
+              <div class="settings-personal-preview-label">Preview da saudacao</div>
+              <div class="settings-personal-preview-text" id="settingsPersonalPreviewText">
+                No que voce esta <span>trabalhando?</span>
+              </div>
+            </div>
+
+            <div class="settings-personal-actions">
+              <button class="outline-btn settings-personal-save-btn" id="settingsPersonalSaveBtn" type="button">
+                Salvar personalizacao
+              </button>
+              <div class="settings-personal-feedback" id="settingsPersonalFeedback"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="settings-section" id="tab-conta">
+          <h2>Conta</h2>
+          <div class="account-tab-subtitle">
+            Visao geral da sua conta conectada no banco, com sessao ativa e atalhos de gerenciamento.
+          </div>
+
+          <div class="account-grid">
+            <article class="account-card account-card-main">
+              <div class="account-card-head">
+                <div class="account-avatar" id="accountAvatarWrap" aria-hidden="true">
+                  <img id="accountAvatarImage" alt="" />
+                  <span class="account-avatar-fallback" id="accountAvatarFallback">L</span>
+                </div>
+
+                <div class="account-identity">
+                  <div class="account-name" id="accountDisplayName">Carregando...</div>
+                  <div class="account-username" id="accountUsername">@usuario</div>
+                </div>
+
+                <div class="account-plan-badge" id="accountPlanBadge">Plano Free</div>
+              </div>
+
+              <div class="account-meta-list">
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Email</div>
+                  <div class="account-meta-value" id="accountEmail">-</div>
+                  <button class="account-copy-btn" id="accountCopyEmailBtn" type="button">Copiar</button>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">ID</div>
+                  <div class="account-meta-value" id="accountUserId">-</div>
+                  <button class="account-copy-btn" id="accountCopyIdBtn" type="button">Copiar</button>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Criada em</div>
+                  <div class="account-meta-value" id="accountCreatedAt">-</div>
+                  <div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="account-card">
+              <div class="account-card-title">Sessao</div>
+              <div class="account-session-status" id="accountSessionStatus">Verificando...</div>
+
+              <div class="account-meta-list compact">
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Expira em</div>
+                  <div class="account-meta-value" id="accountSessionExpiry">-</div>
+                  <div></div>
+                </div>
+
+                <div class="account-meta-row">
+                  <div class="account-meta-label">Ultima sync</div>
+                  <div class="account-meta-value" id="accountLastSync">-</div>
+                  <div></div>
+                </div>
+              </div>
+
+              <div class="account-actions">
+                <button class="outline-btn account-action-btn" id="accountRefreshBtn" type="button">Atualizar dados</button>
+                <button class="outline-btn account-action-btn" id="accountEditProfileBtn" type="button">Editar perfil</button>
+                <button class="outline-btn account-action-btn" id="accountOpenActivityBtn" type="button">Ver atividade</button>
+                <button class="outline-btn account-action-btn danger" id="settingsLogoutBtn" type="button">Sair da conta</button>
+              </div>
+
+              <div class="account-feedback" id="accountFeedback"></div>
+            </article>
+          </div>
+        </section>
+
+<section class="settings-section" id="tab-ajuda">
+  <h2>Ajuda</h2>
+  <div class="tab-placeholder help-content" id="helpRoot">
+    <p class="help-text">
+      Central de ajuda da Liz. Escolha uma opcao para ver orientacoes rapidas.
+    </p>
+    <div class="help-actions">
+      <button class="outline-btn help-btn" type="button" data-help-action="faq">Perguntas frequentes</button>
+      <button class="outline-btn help-btn" type="button" data-help-action="suporte">Falar com suporte</button>
+      <button class="outline-btn help-btn" type="button" data-help-action="status">Status da plataforma</button>
+    </div>
+
+    <div class="help-support-card">
+      <div class="help-support-head">
+        <div class="help-support-title">Enviar mensagem para suporte</div>
+        <div class="help-support-target">Destino: suporte.liz.oficiall@gmail.com</div>
+      </div>
+
+      <div class="help-support-row">
+        <label class="help-support-label" for="helpSupportEmail">Email da sua conta</label>
+        <input
+          class="help-support-input"
+          id="helpSupportEmail"
+          type="email"
+          readonly
+          placeholder="Carregando email da conta..."
+        />
+      </div>
+
+      <div class="help-support-row">
+        <label class="help-support-label" for="helpSupportMessage">Sua mensagem</label>
+        <textarea
+          class="help-support-textarea"
+          id="helpSupportMessage"
+          maxlength="1500"
+          placeholder="Descreva seu problema ou duvida. Quanto mais detalhes, melhor."
+        ></textarea>
+      </div>
+
+      <div class="help-support-footer">
+        <button class="outline-btn help-send-btn" id="helpSupportSendBtn" type="button">
+          Enviar para suporte
+        </button>
+        <div class="help-support-count" id="helpSupportCount">0/1500</div>
+      </div>
+    </div>
+
+    <div class="help-feedback" id="helpFeedback" aria-live="polite"></div>
+  </div>
+</section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="profile-modal" id="profileModal" hidden>
+  <div class="profile-panel">
+    <div class="profile-panel-top">
+      <div>
+        <h2 class="profile-panel-title">Meu perfil</h2>
+        <p class="profile-panel-subtitle">Atualize seu nome, usuario e foto.</p>
+      </div>
+      <button class="profile-panel-close" id="closeProfilePanel" aria-label="Fechar perfil" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <form class="profile-form" id="profileForm">
+      <div class="profile-avatar-editor">
+        <div class="profile-avatar-preview" id="profileAvatarPreviewWrap">
+          <img id="profileAvatarPreview" alt="Preview da foto do perfil" />
+          <svg id="profileAvatarPreviewFallback" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </div>
+
+        <div class="profile-avatar-actions">
+          <button class="outline-btn profile-upload-btn" id="profileAvatarUploadBtn" type="button">Escolher foto</button>
+          <button class="outline-btn profile-remove-btn" id="profileAvatarRemoveBtn" type="button">Remover</button>
+          <input id="profileAvatarFileInput" type="file" accept="image/*" hidden />
+        </div>
+      </div>
+
+      <div class="profile-form-grid">
+        <label class="profile-form-label" for="profileDisplayNameInput">Nome de exibicao</label>
+        <input class="profile-form-input" id="profileDisplayNameInput" name="display_name" type="text" maxlength="60" autocomplete="name" />
+      </div>
+
+      <div class="profile-form-grid">
+        <label class="profile-form-label" for="profileUsernameInput">Nome de usuario</label>
+        <input class="profile-form-input" id="profileUsernameInput" name="username" type="text" maxlength="30" autocomplete="username" />
+      </div>
+
+      <div class="profile-form-footer">
+        <div class="profile-form-feedback" id="profileFormFeedback"></div>
+        <button class="send-btn profile-save-btn" id="saveProfileBtn" type="submit">Salvar perfil</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="activity-modal" id="activityModal" hidden>
+  <div class="activity-panel">
+    <div class="activity-top">
+      <div>
+        <h2 class="activity-title">Atividade</h2>
+        <p class="activity-subtitle">Evolucao das suas interacoes mes a mes</p>
+      </div>
+      <button class="activity-close" id="closeActivityPanel" aria-label="Fechar atividade" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="activity-summary" id="activitySummary">Carregando atividade...</div>
+    <div class="activity-chart" id="activityChart"></div>
+  </div>
+</div>
+
+<div class="usage-modal" id="usageModal" hidden>
+  <div class="usage-panel">
+    <div class="usage-top">
+      <div>
+        <h2 class="usage-title">Limites de uso restantes</h2>
+        <p class="usage-subtitle" id="usageSubtitle">Plano Free: 2.000 tokens para usar Liz 2.3 e Liz 2.5.</p>
+      </div>
+      <button class="usage-close" id="closeUsagePanel" aria-label="Fechar limites de uso" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="usage-grid">
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label">Plano atual</div>
+          <div class="usage-card-value" id="usagePlanValue">Gratis</div>
+        </div>
+      </article>
+
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label" id="usageMetricOneLabel">Tokens Liz 2.3/2.5</div>
+          <div class="usage-card-value" id="usageMetricOneValue">2000/2000</div>
+        </div>
+        <div class="usage-track">
+          <div class="usage-fill" id="usageMetricOneFill" style="width: 100%"></div>
+        </div>
+      </article>
+
+      <article class="usage-card">
+        <div class="usage-card-head">
+          <div class="usage-card-label" id="usageMetricTwoLabel">Recarga</div>
+          <div class="usage-card-value" id="usageMetricTwoValue">A cada 5h apos zerar</div>
+        </div>
+        <div class="usage-track">
+          <div class="usage-fill" id="usageMetricTwoFill" style="width: 100%"></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="usage-note" id="usageNote">Atualizando uso da conta...</div>
+  </div>
+</div>
+
+<script>
+  (function initLizHtmlBridge() {
+    if (window.__LIZ_FETCH_BRIDGED__) return;
+    window.__LIZ_FETCH_BRIDGED__ = true;
+
+    const CHANNEL = 'liz-bridge-v1';
+    const REQUEST_TYPE = 'LIZ_BRIDGE_REQUEST';
+    const RESPONSE_TYPE = 'LIZ_BRIDGE_RESPONSE';
+    const CHAT_COMPLETIONS_PATH = '/v1/chat/completions';
+    const MODEL_BY_PATH = {
+      '/api/liz-mini': 'mini',
+      '/api/liz-2.3': '2.3',
+      '/api/liz-flash': 'flash',
+      '/api/liz-2.5': '2.5',
+    };
+
+    const pendingRequests = new Map();
+    let bridgeWindow = null;
+    let bridgeReadyPromise = null;
+
+    function getLizBase() {
+      const runtimeBase = window.__LIZ_RUNTIME && window.__LIZ_RUNTIME.lizDirectBase;
+      const safeBase = String(runtimeBase || 'https://liz-edge-server.studiosluxgames.workers.dev').trim();
+      return safeBase.replace(/\/+$/, '');
+    }
+
+    function normalizeUrl(url) {
+      try {
+        return new URL(String(url || ''), window.location.origin).toString().replace(/\/+$/, '');
+      } catch (error) {
+        return '';
+      }
+    }
+
+    function normalizeBridgeModel(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (normalized === 'mini' || normalized === 'liz-mini') return 'mini';
+      if (normalized === '2.3' || normalized === 'liz-2.3') return '2.3';
+      if (
+        normalized === 'flash'
+        || normalized === 'liz flash'
+        || normalized === 'liz-flash'
+      ) {
+        return 'flash';
+      }
+      if (
+        normalized === '2.5'
+        || normalized === 'liz 2.5'
+        || normalized === 'liz-2.5'
+      ) {
+        return '2.5';
+      }
+      return 'mini';
+    }
+
+    function getModelFromUrl(url, body) {
+      const bodyModel = normalizeBridgeModel(body && body.model);
+      const rawBodyModel = String(body && body.model || '').trim();
+      if (rawBodyModel) return bodyModel;
+
+      const base = getLizBase();
+      const path = String(url || '').replace(base, '');
+      return MODEL_BY_PATH[path] || 'mini';
+    }
+
+    function isLizDirectUrl(url) {
+      const base = getLizBase();
+      if (url === `${base}${CHAT_COMPLETIONS_PATH}`) return true;
+      return Object.keys(MODEL_BY_PATH).some(path => url === `${base}${path}`);
+    }
+
+    function normalizeBridgeMessages(body) {
+      const directMessages = Array.isArray(body && body.messages) ? body.messages : [];
+      const normalizedDirect = directMessages
+        .map(entry => {
+          const role = String(entry && entry.role || '').trim().toLowerCase();
+          const safeRole = ['user', 'assistant', 'system'].includes(role) ? role : 'user';
+          const content = String(entry && entry.content || '').trim();
+          return content ? { role: safeRole, content } : null;
+        })
+        .filter(Boolean);
+      if (normalizedDirect.length > 0) return normalizedDirect;
+
+      const legacyContents = Array.isArray(body && body.contents) ? body.contents : [];
+      const legacyMessages = legacyContents
+        .map(entry => {
+          const role = String(entry && entry.role || '').trim().toLowerCase();
+          const safeRole = ['user', 'assistant', 'system'].includes(role) ? role : 'user';
+          const parts = Array.isArray(entry && entry.parts) ? entry.parts : [];
+          const content = parts
+            .map(part => String(part && part.text || '').trim())
+            .filter(Boolean)
+            .join('\n')
+            .trim();
+          return content ? { role: safeRole, content } : null;
+        })
+        .filter(Boolean);
+      if (legacyMessages.length > 0) return legacyMessages;
+
+      const text = String(body && body.message || '').trim();
+      if (text) return [{ role: 'user', content: text }];
+      return [];
+    }
+
+    function parseRequestBody(init) {
+      if (!init || typeof init !== 'object') return {};
+      if (typeof init.body !== 'string') return {};
+      try {
+        return JSON.parse(init.body);
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function buildRequestId() {
+      return `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    }
+
+    function onBridgeMessage(event) {
+      if (event.origin !== window.location.origin) return;
+
+      const data = event.data;
+      if (!data || typeof data !== 'object') return;
+      if (data.channel !== CHANNEL || data.type !== RESPONSE_TYPE) return;
+
+      const requestId = String(data.requestId || '');
+      if (!requestId) return;
+
+      const pending = pendingRequests.get(requestId);
+      if (!pending) return;
+      pendingRequests.delete(requestId);
+      window.clearTimeout(pending.timeoutId);
+
+      if (!data.success) {
+        pending.reject(new Error(String(data.error || 'Falha no server node da Liz.')));
+        return;
+      }
+
+      pending.resolve(data.data || {});
+    }
+
+    function ensureBridgeReady() {
+      if (bridgeReadyPromise) return bridgeReadyPromise;
+
+      bridgeReadyPromise = new Promise((resolve, reject) => {
+        const iframe = document.createElement('iframe');
+        iframe.id = 'liz-server-node-frame';
+        iframe.src = 'server-node.html';
+        iframe.hidden = true;
+        iframe.tabIndex = -1;
+        iframe.setAttribute('aria-hidden', 'true');
+
+        iframe.onload = () => {
+          bridgeWindow = iframe.contentWindow || null;
+          if (!bridgeWindow) {
+            reject(new Error('Bridge Liz sem janela ativa.'));
+            return;
+          }
+          resolve(bridgeWindow);
+        };
+
+        iframe.onerror = () => {
+          reject(new Error('Falha ao carregar server-node.html.'));
+        };
+
+        window.addEventListener('message', onBridgeMessage);
+        document.body.appendChild(iframe);
+      });
+
+      return bridgeReadyPromise;
+    }
+
+    function requestViaBridge(url, init) {
+      return ensureBridgeReady().then(() => new Promise((resolve, reject) => {
+        if (!bridgeWindow) {
+          reject(new Error('Bridge Liz indisponivel.'));
+          return;
+        }
+
+        const body = parseRequestBody(init);
+        const requestId = buildRequestId();
+        const timeoutId = window.setTimeout(() => {
+          pendingRequests.delete(requestId);
+          reject(new Error('Timeout ao consultar a Liz via bridge.'));
+        }, 14000);
+
+        pendingRequests.set(requestId, {
+          resolve,
+          reject,
+          timeoutId,
+        });
+
+        try {
+          bridgeWindow.postMessage({
+            channel: CHANNEL,
+            type: REQUEST_TYPE,
+            requestId,
+            payload: {
+              model: getModelFromUrl(url, body),
+              messages: normalizeBridgeMessages(body),
+              stream: Boolean(body.stream),
+            },
+          }, window.location.origin);
+        } catch (error) {
+          pendingRequests.delete(requestId);
+          window.clearTimeout(timeoutId);
+          reject(error);
+        }
+      }));
+    }
+
+    const nativeFetch = window.fetch.bind(window);
+
+    window.fetch = function lizBridgeFetch(input, init) {
+      const rawUrl = typeof input === 'string'
+        ? input
+        : (input && typeof input.url === 'string' ? input.url : '');
+
+      if (!rawUrl) {
+        return nativeFetch(input, init);
+      }
+
+      const normalizedUrl = normalizeUrl(rawUrl);
+      if (!normalizedUrl || !isLizDirectUrl(normalizedUrl)) {
+        return nativeFetch(input, init);
+      }
+
+      return requestViaBridge(normalizedUrl, init)
+        .then(payload => new Response(JSON.stringify(payload || {}), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }))
+        .catch(error => new Response(JSON.stringify({
+          detail: String(error && error.message ? error.message : 'Falha na bridge da Liz.'),
+        }), {
+          status: 502,
+          headers: { 'Content-Type': 'application/json' },
+        }));
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        ensureBridgeReady().catch(() => {});
+      }, { once: true });
+    } else {
+      ensureBridgeReady().catch(() => {});
+    }
+  })();
+</script>
+
+  <script src="../src/js/api.js?v=20260418-5"></script>
+  <script src="../src/js/auth.js?v=20260418-4"></script>
+<script src="../src/js/markdown.js?v=20260416-2"></script>
+<script src="../src/js/ui.js?v=20260418-8"></script>
+  <script src="../src/js/chat.js?v=20260418-9"></script>
+<script src="../src/js/help.js?v=20260408-3"></script>
+<script src="../src/js/main.js"></script>
+</body>
+</html>
+

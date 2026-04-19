@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="liz-api-base" content="https://liz-brasil-api.studiosluxgames.workers.dev/api/v1">
+  <meta name="liz-supabase-url" content="https://xrwqixhmkqjwivmqosfj.supabase.co">
+  <title>Liz Brasil</title>
+  <link rel="icon" type="image/png" href="favicon-top.png?v=1">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="../src/styles/global.css?v=20260418-5">
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="app">
+{{sidebar}}
+
+  <div class="main">
+{{header}}
+
+{{chat-box}}
+  </div>
+</div>
+
+{{footer}}
+
+<script>
+  (function initLizHtmlBridge() {
+    if (window.__LIZ_FETCH_BRIDGED__) return;
+    window.__LIZ_FETCH_BRIDGED__ = true;
+
+    const CHANNEL = 'liz-bridge-v1';
+    const REQUEST_TYPE = 'LIZ_BRIDGE_REQUEST';
+    const RESPONSE_TYPE = 'LIZ_BRIDGE_RESPONSE';
+    const CHAT_COMPLETIONS_PATH = '/v1/chat/completions';
+    const MODEL_BY_PATH = {
+      '/api/liz-mini': 'mini',
+      '/api/liz-2.3': '2.3',
+      '/api/liz-flash': 'flash',
+      '/api/liz-2.5': '2.5',
+    };
+
+    const pendingRequests = new Map();
+    let bridgeWindow = null;
+    let bridgeReadyPromise = null;
+
+    function getLizBase() {
+      const runtimeBase = window.__LIZ_RUNTIME && window.__LIZ_RUNTIME.lizDirectBase;
+      const safeBase = String(runtimeBase || 'https://liz-edge-server.studiosluxgames.workers.dev').trim();
+      return safeBase.replace(/\/+$/, '');
+    }
+
+    function normalizeUrl(url) {
+      try {
+        return new URL(String(url || ''), window.location.origin).toString().replace(/\/+$/, '');
+      } catch (error) {
+        return '';
+      }
+    }
+
+    function normalizeBridgeModel(value) {
+      const normalized = String(value || '').trim().toLowerCase();
+      if (normalized === 'mini' || normalized === 'liz-mini') return 'mini';
+      if (normalized === '2.3' || normalized === 'liz-2.3') return '2.3';
+      if (
+        normalized === 'flash'
+        || normalized === 'liz flash'
+        || normalized === 'liz-flash'
+      ) {
+        return 'flash';
+      }
+      if (
+        normalized === '2.5'
+        || normalized === 'liz 2.5'
+        || normalized === 'liz-2.5'
+      ) {
+        return '2.5';
+      }
+      return 'mini';
+    }
+
+    function getModelFromUrl(url, body) {
+      const bodyModel = normalizeBridgeModel(body && body.model);
+      const rawBodyModel = String(body && body.model || '').trim();
+      if (rawBodyModel) return bodyModel;
+
+      const base = getLizBase();
+      const path = String(url || '').replace(base, '');
+      return MODEL_BY_PATH[path] || 'mini';
+    }
+
+    function isLizDirectUrl(url) {
+      const base = getLizBase();
+      if (url === `${base}${CHAT_COMPLETIONS_PATH}`) return true;
+      return Object.keys(MODEL_BY_PATH).some(path => url === `${base}${path}`);
+    }
+
+    function normalizeBridgeMessages(body) {
+      const directMessages = Array.isArray(body && body.messages) ? body.messages : [];
+      const normalizedDirect = directMessages
+        .map(entry => {
+          const role = String(entry && entry.role || '').trim().toLowerCase();
+          const safeRole = ['user', 'assistant', 'system'].includes(role) ? role : 'user';
+          const content = String(entry && entry.content || '').trim();
+          return content ? { role: safeRole, content } : null;
+        })
+        .filter(Boolean);
+      if (normalizedDirect.length > 0) return normalizedDirect;
+
+      const legacyContents = Array.isArray(body && body.contents) ? body.contents : [];
+      const legacyMessages = legacyContents
+        .map(entry => {
+          const role = String(entry && entry.role || '').trim().toLowerCase();
+          const safeRole = ['user', 'assistant', 'system'].includes(role) ? role : 'user';
+          const parts = Array.isArray(entry && entry.parts) ? entry.parts : [];
+          const content = parts
+            .map(part => String(part && part.text || '').trim())
+            .filter(Boolean)
+            .join('\n')
+            .trim();
+          return content ? { role: safeRole, content } : null;
+        })
+        .filter(Boolean);
+      if (legacyMessages.length > 0) return legacyMessages;
+
+      const text = String(body && body.message || '').trim();
+      if (text) return [{ role: 'user', content: text }];
+      return [];
+    }
+
+    function parseRequestBody(init) {
+      if (!init || typeof init !== 'object') return {};
+      if (typeof init.body !== 'string') return {};
+      try {
+        return JSON.parse(init.body);
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function buildRequestId() {
+      return `${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+    }
+
+    function onBridgeMessage(event) {
+      if (event.origin !== window.location.origin) return;
+
+      const data = event.data;
+      if (!data || typeof data !== 'object') return;
+      if (data.channel !== CHANNEL || data.type !== RESPONSE_TYPE) return;
+
+      const requestId = String(data.requestId || '');
+      if (!requestId) return;
+
+      const pending = pendingRequests.get(requestId);
+      if (!pending) return;
+      pendingRequests.delete(requestId);
+      window.clearTimeout(pending.timeoutId);
+
+      if (!data.success) {
+        pending.reject(new Error(String(data.error || 'Falha no server node da Liz.')));
+        return;
+      }
+
+      pending.resolve(data.data || {});
+    }
+
+    function ensureBridgeReady() {
+      if (bridgeReadyPromise) return bridgeReadyPromise;
+
+      bridgeReadyPromise = new Promise((resolve, reject) => {
+        const iframe = document.createElement('iframe');
+        iframe.id = 'liz-server-node-frame';
+        iframe.src = 'server-node.html';
+        iframe.hidden = true;
+        iframe.tabIndex = -1;
+        iframe.setAttribute('aria-hidden', 'true');
+
+        iframe.onload = () => {
+          bridgeWindow = iframe.contentWindow || null;
+          if (!bridgeWindow) {
+            reject(new Error('Bridge Liz sem janela ativa.'));
+            return;
+          }
+          resolve(bridgeWindow);
+        };
+
+        iframe.onerror = () => {
+          reject(new Error('Falha ao carregar server-node.html.'));
+        };
+
+        window.addEventListener('message', onBridgeMessage);
+        document.body.appendChild(iframe);
+      });
+
+      return bridgeReadyPromise;
+    }
+
+    function requestViaBridge(url, init) {
+      return ensureBridgeReady().then(() => new Promise((resolve, reject) => {
+        if (!bridgeWindow) {
+          reject(new Error('Bridge Liz indisponivel.'));
+          return;
+        }
+
+        const body = parseRequestBody(init);
+        const requestId = buildRequestId();
+        const timeoutId = window.setTimeout(() => {
+          pendingRequests.delete(requestId);
+          reject(new Error('Timeout ao consultar a Liz via bridge.'));
+        }, 14000);
+
+        pendingRequests.set(requestId, {
+          resolve,
+          reject,
+          timeoutId,
+        });
+
+        try {
+          bridgeWindow.postMessage({
+            channel: CHANNEL,
+            type: REQUEST_TYPE,
+            requestId,
+            payload: {
+              model: getModelFromUrl(url, body),
+              messages: normalizeBridgeMessages(body),
+              stream: Boolean(body.stream),
+            },
+          }, window.location.origin);
+        } catch (error) {
+          pendingRequests.delete(requestId);
+          window.clearTimeout(timeoutId);
+          reject(error);
+        }
+      }));
+    }
+
+    const nativeFetch = window.fetch.bind(window);
+
+    window.fetch = function lizBridgeFetch(input, init) {
+      const rawUrl = typeof input === 'string'
+        ? input
+        : (input && typeof input.url === 'string' ? input.url : '');
+
+      if (!rawUrl) {
+        return nativeFetch(input, init);
+      }
+
+      const normalizedUrl = normalizeUrl(rawUrl);
+      if (!normalizedUrl || !isLizDirectUrl(normalizedUrl)) {
+        return nativeFetch(input, init);
+      }
+
+      return requestViaBridge(normalizedUrl, init)
+        .then(payload => new Response(JSON.stringify(payload || {}), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }))
+        .catch(error => new Response(JSON.stringify({
+          detail: String(error && error.message ? error.message : 'Falha na bridge da Liz.'),
+        }), {
+          status: 502,
+          headers: { 'Content-Type': 'application/json' },
+        }));
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        ensureBridgeReady().catch(() => {});
+      }, { once: true });
+    } else {
+      ensureBridgeReady().catch(() => {});
+    }
+  })();
+</script>
+
+  <script src="../src/js/api.js?v=20260418-5"></script>
+  <script src="../src/js/auth.js?v=20260418-4"></script>
+<script src="../src/js/markdown.js?v=20260416-2"></script>
+<script src="../src/js/ui.js?v=20260418-8"></script>
+  <script src="../src/js/chat.js?v=20260418-9"></script>
+<script src="../src/js/help.js?v=20260408-3"></script>
+<script src="../src/js/main.js"></script>
+</body>
+</html>
+
