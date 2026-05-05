@@ -1,0 +1,231 @@
+# Changelog
+
+All notable changes to **grouter** are documented here. The format is based on
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
+adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+The dashboard reads this file directly from
+`https://raw.githubusercontent.com/GXDEVS/grouter/main/CHANGELOG.md`
+to surface release notes and notify when a newer version is available.
+
+## [Unreleased]
+
+## [5.7.1] - 2026-05-05
+
+### Fixed
+- **Kiro: AWS rejecting tokens after ~8h** — the chat handler's Kiro
+  branch read the bearer from `selected` (the pre-refresh account
+  snapshot) instead of `account` (the post-refresh result of
+  `checkAndRefreshAccount`). Worked right after sign-in while the
+  original token was still valid, then started failing with `The bearer
+  token included in the request is invalid` once AWS expired it. Bug
+  dates back to the Kiro MVP (#44) but only surfaced now as token
+  lifetimes elapsed in the wild. All other providers were already
+  reading from `account`.
+
+## [5.7.0] - 2026-05-04
+
+### Added
+- **`grouter up <platform>` for OpenCode, Cline, and OpenClaw** — the `up`
+  command now ships three new adapters in addition to OpenClaude:
+  - `grouter up opencode` writes/merges
+    `~/.config/opencode/opencode.json` with a custom `@ai-sdk/openai-compatible`
+    provider named `grouter`, pointing at the local proxy. Honours
+    `OPENCODE_CONFIG`. Existing config (mcp servers, other providers, etc.) is
+    preserved.
+  - `grouter up cline` shells out to the `cline` CLI
+    (`cline auth -p openai -k grouter -b http://localhost:<port>/v1 -m <model>`).
+    If the binary isn't on `PATH`, prints install instructions and the manual
+    settings to use in the VS Code extension.
+  - `grouter up openclaw` writes/merges `~/.openclaw/openclaw.json` under
+    `agents.defaults.models["grouter/<model>"]`. Honours `OPENCLAW_CONFIG_PATH`
+    and `OPENCLAW_HOME`. Sets the entry as `primary` only if the user hasn't
+    already configured one.
+  Each adapter supports the same flags as `up openclaude` — `--provider`,
+  `--model`, `--port`, `--no-interactive`, `--remove`.
+- **Restart server button** in the dashboard topbar — connected to the
+  existing Stop server control as a button group (refresh icon on the
+  right). Clicking it hits a new `POST /api/proxy/restart` endpoint that
+  spawns a detached `serve restart` helper (since the dashboard runs
+  inside the daemon and can't both kill itself and respawn). The button
+  spins, both controls disable, auto-poll pauses, and the UI polls
+  `/api/status` every 600ms (25s deadline) until the new daemon answers,
+  then resumes auto-poll.
+- **Custom Providers CRUD on the dashboard** — the existing "Add custom
+  provider" flow is now a full section under the Providers tab with
+  inline cards. Each custom provider can be edited (name, base URL,
+  iconify icon, accent color) or removed. Removing also drops every
+  connection registered under that provider and releases the per-provider
+  port. New endpoints: `PATCH /api/providers/custom/:id` and
+  `DELETE /api/providers/custom/:id`. Modal gains an icon-preset grid
+  (12 iconify IDs) plus a color picker with quick-swatch presets.
+- **KiloCode live model catalog** — `fetchAndSaveProviderModels("kilocode")`
+  now hits `https://api.kilo.ai/api/gateway/models` and translates the
+  upstream `{ data[].isFree, data[].pricing }` schema into our internal
+  shape (KiloCode does not serve OpenAI's `/v1/models`). Registry-listed
+  premium IDs (Anthropic Opus/Sonnet/Haiku, kilo-auto/frontier) are
+  always merged in even when missing from the gateway response.
+
+### Changed
+- **`up` wizard refactor** — provider/model picker extracted into
+  `src/commands/up-shared.ts` (`pickProviderAndModel`, `resolveTarget`,
+  `printActiveConfig`, `printWriteReport`). Each platform adapter is now ~150
+  lines focused only on its own config-file shape; `openclaude.ts` keeps the
+  shell-rc / settings.json injection it always had.
+- **KiloCode credits warning** — KiloCode markets a "free OAuth tier"
+  but premium models (Anthropic Claude family, `kilo-auto/frontier`)
+  consume the ~$20 of signup credits, which burn fast on Opus/Sonnet. The
+  CLI picker now shows `$ credits` next to those entries instead of
+  `FREE`, `up <platform>` prints a yellow warning block before writing
+  the config, and the dashboard provider modal shows a credits banner
+  explaining which models stay free (`:free` suffix, `kilo-auto/free`,
+  `openrouter/free`) versus which consume credits. KiloCode's registry
+  list was also refreshed to reflect the 12 currently-free models plus
+  Opus/Sonnet/Haiku 4.6.
+- **Dashboard UI polish**:
+  - Language pickers (desktop sidebar + mobile drawer) now show the
+    country flag of the selected locale via `circle-flags:*` instead of
+    a generic globe — `us` for English, `br` for Portuguese, `cn` for
+    Chinese — and update on switch.
+  - The "view models" button in the Providers tab now uses
+    `solar:settings-bold-duotone` instead of the list icon.
+  - The footer version (`v5.6.0`) is now rendered as a pill badge with
+    the brand teal border + soft fill, so it reads as a tag rather than
+    inline text.
+  - **Update banner relocated** — the old fixed top bar is gone. Now a
+    1:1 square card in the sidebar (above the language picker) with a
+    Solar bold-duotone download icon, `vCURRENT → vLATEST` line, a
+    BUN/NPM tab toggle, and a copy button that ships the right install
+    command for the selected runtime. Dismiss is per-version (a new
+    `latest` re-shows the card). Mirrored in the mobile drawer.
+
+## [5.6.0] - 2026-05-04
+
+### Added
+- **Dashboard Changelog tab** — sidebar entry that fetches `CHANGELOG.md`
+  from the GitHub raw URL, caches it for 30 minutes in the settings table,
+  and parses it into per-version sections. Shows an update banner and a
+  "New" badge when the running build is behind the latest release. The
+  file is also embedded in the binary so the tab works offline before the
+  cache warms.
+- **Kiro translator** — `/v1/chat/completions` requests with
+  `model: kiro/...` are routed through `@aws/codewhisperer-streaming-client`
+  using the existing OAuth account. Both `stream=false` (single
+  OpenAI-compatible response) and `stream=true` (native SSE — each
+  upstream `assistantResponseEvent` is forwarded as its own
+  `chat.completion.chunk` in real time, with role/content/finish chunks
+  and usage on the final delta) are supported. Tool calls and
+  `reasoningContentEvent` are still skipped.
+
+### Changed
+- **Kiro model routing** — `kiro/<model>` now forwards `<model>` to the
+  upstream `userInputMessage.modelId`, so picking `kiro/deepseek-3.2` or
+  `kiro/claude-haiku-4.5` actually selects that model instead of always
+  falling through to the server's default.
+
+### Fixed
+- **Kiro client cancellation** — `AbortSignal` from the proxy is now
+  forwarded to the AWS SDK call, so a client disconnect mid-request
+  actually cancels the upstream work instead of leaking the connection
+  until completion.
+
+## [5.5.0] - 2026-04-29
+
+### Added
+- **`/v1/messages` endpoint** — full Anthropic Messages API support on the
+  router and per-provider listeners. Translates Anthropic ↔ OpenAI in both
+  directions (request body, non-stream response, SSE stream).
+- **Headless OAuth callback mode** — set `GROUTER_PUBLIC_URL=https://your.host`
+  to route OAuth redirects through `<PUBLIC_URL>/oauth/callback` instead of an
+  ephemeral local listener. Works in K8s/VPS/containers where the user's
+  browser cannot reach the container's localhost.
+- **`grouter add --callback-host <host> [--callback-port <port>]`** — force a
+  specific bind for the OAuth listener. Manual paste prompt opens after 8s if
+  the callback never reaches the listener.
+- **`API.md`** committed to the repo with the full HTTP reference (status,
+  models, chat completions, messages, auth flows, CORS).
+
+### Fixed
+- `grouter list` and other CLI commands no longer hang for ~5 minutes — the
+  orchestrator session sweeper is now `unref()`-ed.
+
+## [5.4.0] - 2026-04-29
+
+### Changed
+- **Modular proxy split** — `src/proxy/server.ts` is now a slim router; the
+  hardened `handleChatCompletions` lives in `src/proxy/chat-handler.ts` and
+  shared state (`DISABLED_PROVIDER_IDS`) in `src/proxy/server-helpers.ts`.
+
+### Added
+- **3-layer upstream timeouts** via `AbortController`: 20s first-byte, 45s
+  stream-idle, 120s total request.
+- **Provider-specific recovery paths** — Codex `-high` model fallback, Codex
+  401 retry (drop `ChatGPT-Account-ID` + forced refresh), Gemini capacity
+  fallback (3.1-pro → 2.5-pro → 2.5-flash), large-request body trim and
+  history compaction.
+- **Refined fallback semantics** — auth failures (401/402/403) rotate without
+  long cooldowns; rate limits (429 + structured markers) get exponential
+  backoff up to level 15; transient 5xx get 5s cooldown.
+
+## [5.3.0] - 2026-04-21
+
+### Added
+- **Free-tier providers** — gate models exposed by `provider_free_only_<id>`.
+- **Custom model picker** in the wizard.
+- **Codex translator** — translate Claude-style upstream into OpenAI
+  `chat.completions` SSE/non-stream.
+- **Provider under-construction state** in the registry; SambaNova is gated
+  while its OAuth flow is being reviewed.
+
+### Fixed
+- Docker install lifecycle — skip the install hook so `prebuild` doesn't run
+  before `scripts/` is copied into the image.
+
+## [5.2.2] - 2026-04-20
+
+### Fixed
+- Codex OAuth flow + proxy compatibility hardening.
+
+### Added
+- Dashboard now shows the running version dynamically (no more hardcoded
+  "5.x").
+
+## [5.2.1] - 2026-04-20
+
+### Fixed
+- `npm install -g grouter-auth` now works — `bin` points to `dist/grouter`
+  instead of the missing source path.
+
+## [5.2.0] - 2026-04-20
+
+### Added
+- **Advanced Client API Keys** — per-key permissions, expiry, rate limits.
+- **Custom Providers** — define your own OpenAI-compatible upstream from the
+  dashboard.
+- **OpenRouter enhancements** — refreshed model catalog and pricing.
+
+### Fixed
+- Removed hardcoded `qwen` as the default provider in several code paths.
+- Dashboard language switching is now instant and persists across reloads;
+  fixed a race condition that occasionally swapped languages mid-render.
+
+## [5.1.0] - 2026-04-18
+
+### Added
+- First public **grouter** release after the rebrand from `gqwen-auth`.
+- 15+ provider catalogue (Qwen, Claude, Codex, GitHub Copilot, Gemini, Kimi,
+  Kiro, KiloCode, GitLab Duo, Cursor, OpenRouter, Groq, DeepSeek, …).
+- Single-file Bun binary build (`bun build --target bun`).
+- SQLite state in `~/.grouter/grouter.db` with idempotent silent migrations.
+- Dashboard + setup wizard served from the embedded HTML files.
+
+[Unreleased]: https://github.com/GXDEVS/grouter/compare/v5.6.0...HEAD
+
+[5.6.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.6.0
+[5.5.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.5.0
+[5.4.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.4.0
+[5.3.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.3.0
+[5.2.2]: https://github.com/GXDEVS/grouter/releases/tag/v5.2.2
+[5.2.1]: https://github.com/GXDEVS/grouter/releases/tag/v5.2.1
+[5.2.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.2.0
+[5.1.0]: https://github.com/GXDEVS/grouter/releases/tag/v5.1.0
